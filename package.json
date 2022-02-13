@@ -1,0 +1,22 @@
+{
+  "name": "@tektech/teeshop",
+  "version": "0.0.1-base",
+  "description": "",
+  "main": "TeeShop.js",
+  "scripts": {
+    "test": "node TeeShop.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tek-Tech/teeshop.git"
+  },
+  "keywords": [
+    "e-commerce"
+  ],
+  "author": "El Hadji Seybatou Mbengue (Tek-Tech)",
+  "license": "SEE LICENSE IN FILE LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/Tek-Tech/teeshop/issues"
+  },
+  "homepage": "https://github.com/Tek-Tech/teeshop#readme"
+}
