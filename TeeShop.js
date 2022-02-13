@@ -12,6 +12,7 @@ class TeeShop extends Ear{
             ()=>{
                 this.dbready = 1 
                 console.log("database ready")
+                this.checkIfReady()
             }
         )
     }
@@ -19,6 +20,9 @@ class TeeShop extends Ear{
         this.database.whenReady(
             action
         )
+    }
+    checkIfReady(){
+        if(this.coreready&&this.dbready) this.ready = 1
     }
     init(dbcreds){
         this.whenReady(
@@ -34,7 +38,14 @@ class TeeShop extends Ear{
         if(this.configuredCorepath()) this.assignCore()
     }
     assignCore(){
-        this.core = new (require(path.join(this.getCorePath(),"core")),this.getClasses())
+        this.core = new (require(path.join(this.getCorePath(),"core")))(this.getClasses())
+        this.core.whenReady(
+            ()=>{
+                this.coreready = 1
+                console.log("core ready")
+                this.checkIfReady()
+            }
+        )
     }
     assignClasses(){
         let classespath = this.getClassesPath()
