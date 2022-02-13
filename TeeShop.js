@@ -4,8 +4,13 @@ const DeeBee = require("@tek-tech/deebee")
 const {Ear} = require("@tek-tech/ears")
 
 class TeeShop extends Ear{
-
-
+    tables = {
+        customers : "_customers",
+        categories : "_categories",
+        commands : "_commands",
+        articles : "_articles",
+        admins : "_admins"
+    }
     initDeeBee(dbcreds={}){
         this.database = new DeeBee(dbcreds);
         this.whenDatabaseReady(
@@ -28,6 +33,7 @@ class TeeShop extends Ear{
         this.whenReady(
             ()=>{
                 console.log("i am ready")
+                console.log(this.core)
             }
         )
         this.initDeeBee(dbcreds)
@@ -38,7 +44,8 @@ class TeeShop extends Ear{
         if(this.configuredCorepath()) this.assignCore()
     }
     assignCore(){
-        this.core = new (require(path.join(this.getCorePath(),"core")))(this.getClasses())
+        const Core = require(path.join(this.getCorePath(),"core"))
+        this.core = new Core(this.getClasses(),this.database,this.getClassesPath())
         this.core.whenReady(
             ()=>{
                 this.coreready = 1
@@ -86,9 +93,6 @@ class TeeShop extends Ear{
         this.setConfig(config)
         this.init(dbcreds)
     }
-
 }
-
 module.exports = TeeShop
-
 let tshop = new TeeShop({corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes')},dbcreds={host:'127.0.0.1',user:'root',database:'tek_tech',password:''})

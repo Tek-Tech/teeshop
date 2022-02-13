@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Tek-Tech/teeshop#readme",
   "dependencies": {
-    "@tek-tech/deebee": "^1.0.2-ears-r",
+    "@tek-tech/deebee": "^1.0.2-ears-r1",
     "@tek-tech/ears": "^0.0.1-beta",
     "fs": "^0.0.1-security",
     "path": "^0.12.7"

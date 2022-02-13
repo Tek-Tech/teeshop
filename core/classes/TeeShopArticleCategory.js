@@ -1,7 +1,7 @@
 const path = require('path')
 const TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
 
-class TeeShopCart extends TeeShopObject{
+class TeeShopArticleCategory extends TeeShopObject{
 
 
     initDeeBee(){
@@ -20,4 +20,4 @@ class TeeShopCart extends TeeShopObject{
 
 }
 
-module.exports = TeeShopCart
+module.exports = TeeShopArticleCategory

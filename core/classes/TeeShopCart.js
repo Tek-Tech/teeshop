@@ -5,6 +5,12 @@ class TeeShopCart extends TeeShopObject{
 
 
 
+    initDeeBee(){
+        if(this.config.db){
+            
+        }
+    }
+
     constructor(config,data){
         super(config,data)
     }
