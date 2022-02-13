@@ -4,6 +4,7 @@ const DeeBee = require("@tek-tech/deebee")
 const {Ear} = require("@tek-tech/ears")
 
 class TeeShop extends Ear{
+    static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes')}
     tables = {
         customers : "_customers",
         categories : "_categories",
@@ -94,5 +95,5 @@ class TeeShop extends Ear{
         this.init(dbcreds)
     }
 }
+
 module.exports = TeeShop
-let tshop = new TeeShop({corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes')},dbcreds={host:'127.0.0.1',user:'root',database:'tek_tech',password:''})
