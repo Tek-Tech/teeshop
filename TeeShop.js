@@ -1,8 +1,10 @@
 const fs = require('fs')
 const path = require('path')
 const {Ear} = require("@tek-tech/ears")
+const { commandes } = require('./core/learn/tbs')
 
 class TeeShop extends Ear{
+    data = {}
     static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes'),modulespath:path.join(__dirname,'core','modules')}
     static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'test1'}
     static _d_conf(){
@@ -17,13 +19,6 @@ class TeeShop extends Ear{
     static _sd_creds(creds){
         return this.defaultcreds = creds ? creds : this._d_creds()
     }
-    tables = {
-        customers : "_customers",
-        categories : "_categories",
-        commands : "_commands",
-        articles : "_articles",
-        admins : "_admins"
-    }
     whenDatabaseReady(action){
         this.database.whenReady(
             action
@@ -32,14 +27,64 @@ class TeeShop extends Ear{
     checkIfReady(){
         if(this.coreready&&this.dbready) this.ready = 1
     }
-    init(dbcreds){
+    init(dbcreds,cb){
         this.dc = dbcreds
         this.whenReady(
             ()=>{
-                console.log("i am ready")
+                console.log("TeeShop Is Ready")
+                this.setData(cb)
             }
         )
         this.runConfigActions()
+    }
+    setData(cb){
+
+        const 
+            clients = (cb)=>{
+                this.database._getClis(
+                    cb
+                )
+            }
+            ,articles = (cb)=>{
+                this.database._getProds(
+                    cb
+                )
+            },commandes = (cb)=>{
+                this.database._getComs(
+                    cb
+                )
+            },admins = (cb)=>{
+                this.database._getAdms(
+                    cb
+                )
+            }
+        
+        clients(
+            (e,clis)=>{
+                this.data.clients = clis?clis:[]
+                try{
+                    admins(
+                        (e,adms)=>{
+                            this.data.admins = adms
+                            articles(
+                                (e,prods)=>{
+                                    this.data.articles = prods
+                                    commandes(
+                                        (e,coms)=>{
+                                            this.data.commandes = coms
+                                            if(cb)cb(this)
+                                        }
+                                    )
+                                }
+                            )
+                        }
+                    )
+                }catch(e){
+                    if(cb)cb(this)
+                }
+            }
+        )
+
     }
     runConfigActions(){
         if(this.configuredClassespath()) this.assignClasses()
@@ -108,12 +153,12 @@ class TeeShop extends Ear{
             configname=>this.assignConfig(configname,config[configname])
         )
     }
-    constructor(config,dbcreds){
+    constructor(config,dbcreds,cb){
         super()
         this.config = {}
         this.classes = {}
         this.setConfig(config)
-        this.init(dbcreds)
+        this.init(dbcreds,cb)
     }
 }
 
