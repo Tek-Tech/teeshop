@@ -1,11 +1,10 @@
 const fs = require('fs')
 const path = require('path')
-const DeeBee = require("@tek-tech/deebee")
 const {Ear} = require("@tek-tech/ears")
 
 class TeeShop extends Ear{
     static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes'),modulespath:path.join(__dirname,'core','modules')}
-    static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'test'}
+    static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'test1'}
     static _d_conf(){
         return this.defaultconf
     }
@@ -25,16 +24,6 @@ class TeeShop extends Ear{
         articles : "_articles",
         admins : "_admins"
     }
-    initDeeBee(dbcreds={}){
-        this.database = new DeeBee(dbcreds);
-        this.whenDatabaseReady(
-            ()=>{
-                this.dbready = 1 
-                console.log("database ready")
-                this.checkIfReady()
-            }
-        )
-    }
     whenDatabaseReady(action){
         this.database.whenReady(
             action
@@ -44,12 +33,12 @@ class TeeShop extends Ear{
         if(this.coreready&&this.dbready) this.ready = 1
     }
     init(dbcreds){
+        this.dc = dbcreds
         this.whenReady(
             ()=>{
                 console.log("i am ready")
             }
         )
-        // this.initDeeBee(dbcreds)
         this.runConfigActions()
     }
     runConfigActions(){

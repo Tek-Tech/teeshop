@@ -40,7 +40,7 @@ module.exports = class extends Ear {
                         }
                     )
                 }else{
-                    console.log(this.modules)
+                    // console.log(this.modules)
                 }
             }
         )
@@ -70,7 +70,7 @@ module.exports = class extends Ear {
             const modpath = path.join(this.modulespath,mod)
             const conf = this.shoptype._d_conf() 
             const creds = this.shoptype._d_creds()
-            if(name == 'teeshopdata') args = [conf,creds,{},{name:'teedata'}]
+            if(name == 'teeshopdata') args = [creds]
             const Mod  = new (require(modpath))(...args)
             this.modules[name] = {
                 name,path:modpath,module:Mod
@@ -83,14 +83,13 @@ module.exports = class extends Ear {
         )
     }
     assignModules(cb){
-        console.log(this.modulespath)
         const modules = fs.readdirSync(this.modulespath)
         modules.forEach(
             mod=>{
                 this.assignModule(mod)
             }
         )
-        console.log('we got ',Object.keys(this.modules).length,' modules \n',this.modules)
+        console.log('we got ',Object.keys(this.modules).length,' module',Object.keys(this.modules).length<=1?'':'s',' \n',/*this.modules*/)
         if(cb)cb()
     }
 
