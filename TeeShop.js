@@ -4,7 +4,7 @@ const DeeBee = require("@tek-tech/deebee")
 const {Ear} = require("@tek-tech/ears")
 
 class TeeShop extends Ear{
-    static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes')}
+    static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes'),modulespath:path.join(__dirname,'core','modules')}
     static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'test'}
     static _d_conf(){
         return this.defaultconf
@@ -49,7 +49,7 @@ class TeeShop extends Ear{
                 console.log("i am ready")
             }
         )
-        this.initDeeBee(dbcreds)
+        // this.initDeeBee(dbcreds)
         this.runConfigActions()
     }
     runConfigActions(){
@@ -58,10 +58,24 @@ class TeeShop extends Ear{
     }
     assignCore(){
         const Core = require(path.join(this.getCorePath(),"core"))
-        this.core = new Core(this.getClasses(),this.database,this.getClassesPath())
+        this.core = new Core(this.getClasses(),this.database,this.getClassesPath(),this.getModulesPath(),this,TeeShop)
         this.core.whenReady(
             ()=>{
                 this.coreready = 1
+                if(this.core.modules.hasOwnProperty('teeshopdata')){
+                    this.database = this.core.modules.teeshopdata.module
+                    if(this.database.ready){
+                        this.dbready = 1 
+                    }else{
+                        this.whenDatabaseReady(
+                            ()=>{
+                                this.dbready = 1 
+                                console.log("database ready")
+                                this.checkIfReady()
+                            }
+                        )
+                    }
+                }
                 console.log("core ready")
                 this.checkIfReady()
             }
@@ -82,6 +96,9 @@ class TeeShop extends Ear{
     getClassesPath(){
         return this.config.classespath
     }
+    getModulesPath(){
+        return this.config.modulespath
+    }
     getCorePath(){
         return this.config.corepath
     }
@@ -89,7 +106,10 @@ class TeeShop extends Ear{
         return this.config.hasOwnProperty('corepath')
     }
     configuredClassespath(){
-        return this.config.hasOwnProperty('corepath')
+        return this.config.hasOwnProperty('classespath')
+    }
+    configuredModulespath(){
+        return this.config.hasOwnProperty('modulespath')
     }
     assignConfig(configname,configvalue){
         this.config[configname] = configvalue

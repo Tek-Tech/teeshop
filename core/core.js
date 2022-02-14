@@ -1,7 +1,9 @@
 
 const path = require('path')
+const fs = require('fs')
 const { Ear } = require("@tek-tech/ears")
 const { type } = require('os')
+const TeeShopData = require('./modules/TeeShopData')
 
 module.exports = class extends Ear {
 
@@ -27,7 +29,21 @@ module.exports = class extends Ear {
                 }
             }
         )
-        this.ready =1
+        this.assignModules(
+            ()=>{
+                
+                if(this.modules.hasOwnProperty('teeshopdata')){
+                    this.database = this.modules.teeshopdata.module
+                    this.whenDatabaseReady(
+                        ()=>{
+                            this.ready = 1
+                        }
+                    )
+                }else{
+                    console.log(this.modules)
+                }
+            }
+        )
     }
 
     hasObject(objectname){
@@ -47,14 +63,48 @@ module.exports = class extends Ear {
         }
         return object
     }
+    assignModule(mod){
+        if(mod){
+            let args = []
+            const name = mod.split('.js')[0].toLowerCase()
+            const modpath = path.join(this.modulespath,mod)
+            const conf = this.shoptype._d_conf() 
+            const creds = this.shoptype._d_creds()
+            if(name == 'teeshopdata') args = [conf,creds,{},{name:'teedata'}]
+            const Mod  = new (require(modpath))(...args)
+            this.modules[name] = {
+                name,path:modpath,module:Mod
+            }
+        }
+    }
+    whenDatabaseReady(action){
+        this.database.whenReady(
+            action
+        )
+    }
+    assignModules(cb){
+        console.log(this.modulespath)
+        const modules = fs.readdirSync(this.modulespath)
+        modules.forEach(
+            mod=>{
+                this.assignModule(mod)
+            }
+        )
+        console.log('we got ',Object.keys(this.modules).length,' modules \n',this.modules)
+        if(cb)cb()
+    }
 
-    constructor(objects,data,classespath){
+    constructor(objects,data,classespath,modulespath,shop,shoptype){
         super()
+        this.shop = shop
+        this.shoptype = shoptype
         this.instanciated = []
         this.classespath=classespath
+        this.modulespath=modulespath
         this.data = data
         this.ready = null
         this.objects = {}
+        this.modules = {}
         this.init(objects)
     }
 
