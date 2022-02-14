@@ -20,7 +20,7 @@ class TeeShopData extends TeeData{
         {
             name:'_getProd'
             ,cb:function (id,cb){
-                const req = this.__selectFrom(TeeData.knowntables.articles,['*'],[['nom'],[`${id}`]])
+                const req = this.__selectFrom(TeeData.knownTables.articles.name,['*'],[['nom'],[`${id}`]])
                 this._db().query(
                     req,cb
                 )
@@ -29,7 +29,7 @@ class TeeShopData extends TeeData{
         {
             name:'_getProdByName'
             ,cb:function (name,cb){
-                const req = this.__selectFrom(TeeData.knowntables.articles,['*'],[['nom'],[`${name}`]])
+                const req = this.__selectFrom(TeeData.knownTables.articles.name,['*'],[['nom'],[`${name}`]])
                 this._db().query(
                     req,cb
                 )
@@ -38,7 +38,7 @@ class TeeShopData extends TeeData{
         {
             name:'_addProd'
             ,cb:function ({nom,prix},cb){
-                const req = this.__insertINTO(TeeData.knowntables.articles,['nom','prix'],[`${nom}`,`${prix}`])
+                const req = this.__insertINTO(TeeData.knownTables.articles.name,['nom','prix'],[`${nom}`,`${prix}`])
                 this._db().query(
                     req,cb
                 )
@@ -55,6 +55,15 @@ class TeeShopData extends TeeData{
         {
             name:'_getCli',cb:function (id,cb){
                 const req = this.__selectFrom(TeeData._n_t().clients.name,['*'],[['id'],[id]])
+                this._db().query(
+                    req,cb
+                )
+            }
+        },
+        {
+            name:'_addCli'
+            ,cb:function ({nom,prenom,username,adresse,telephone,mail,password},cb){
+                const req = this.__insertINTO(TeeData.knownTables.clients.name,['nom','prenom','username','adresse','telephone','mail','password'],[`'${nom}'`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
                 this._db().query(
                     req,cb
                 )
@@ -103,6 +112,15 @@ class TeeShopData extends TeeData{
         {
             name:'_getAdm',cb:function (id,cb){
                 const req = this.__selectFrom(TeeData._n_t().admins.name,['*'],[['id'],[id]])
+                this._db().query(
+                    req,cb
+                )
+            }
+        },
+        {
+            name:'_addAdm'
+            ,cb:function ({nom,prenom,username,adresse,telephone,mail,password},cb){
+                const req = this.__insertINTO(TeeData.knownTables.admins.name,['nom','prenom','username','adresse','telephone','mail','password'],[`'${nom}'`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
                 this._db().query(
                     req,cb
                 )

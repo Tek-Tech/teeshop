@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const {Ear} = require("@tek-tech/ears")
-const { commandes } = require('./core/learn/tbs')
 
 class TeeShop extends Ear{
     data = {}
@@ -65,18 +64,52 @@ class TeeShop extends Ear{
                 try{
                     admins(
                         (e,adms)=>{
-                            this.data.admins = adms
-                            articles(
-                                (e,prods)=>{
-                                    this.data.articles = prods
-                                    commandes(
-                                        (e,coms)=>{
-                                            this.data.commandes = coms
-                                            if(cb)cb(this)
+                            const actions = ()=>{
+                                articles(
+                                    (e,prods)=>{
+                                        this.data.articles = prods
+                                        commandes(
+                                            (e,coms)=>{
+                                                this.data.commandes = coms
+                                                if(cb)cb(this)
+                                            }
+                                        )
+                                    }
+                                )
+                            }
+                            if(!adms.length){
+                                this.database._addAdm(
+                                    {
+                                        nom:'admin',
+                                        prenom:'admin',
+                                        username:'admin',
+                                        adresse:'admin',
+                                        telephone:'admin',
+                                        mail:'admin',
+                                        password:'teeteetee'
+                                    },(e,r)=>{
+                                        if(r&&r.hasOwnProperty('insertId')){
+                                            this.database._getAdm(
+                                                r.insertId,(e,r)=>{
+                                                    if(r.length){
+                                                        adms.push(r[0])
+                                                    }
+                                                    this.data.admins = adms
+                                                    actions()
+                                                }
+                                            )
+                                        }else{
+                                            console.log(e)
+                                            console.log(r)
+                                            this.data.admins = adms
+                                            actions()
                                         }
-                                    )
-                                }
-                            )
+                                    }
+                                )
+                            }else{
+                                this.data.admins = adms
+                                actions()
+                            }
                         }
                     )
                 }catch(e){
