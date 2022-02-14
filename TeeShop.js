@@ -5,6 +5,19 @@ const {Ear} = require("@tek-tech/ears")
 
 class TeeShop extends Ear{
     static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes')}
+    static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'test'}
+    static _d_conf(){
+        return this.defaultconf
+    }
+    static _d_creds(){
+        return this.defaultcreds
+    }
+    static _sd_conf(conf){
+        return this.defaultconf = conf ? conf : this._d_conf() 
+    }
+    static _sd_creds(creds){
+        return this.defaultcreds = creds ? creds : this._d_creds()
+    }
     tables = {
         customers : "_customers",
         categories : "_categories",
@@ -34,7 +47,6 @@ class TeeShop extends Ear{
         this.whenReady(
             ()=>{
                 console.log("i am ready")
-                console.log(this.core)
             }
         )
         this.initDeeBee(dbcreds)
