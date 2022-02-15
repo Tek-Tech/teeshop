@@ -3,6 +3,9 @@ const path = require('path')
 const {Ear} = require("@tek-tech/ears")
 
 class TeeShop extends Ear{
+
+    //CONF
+
     data = {}
     static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes'),modulespath:path.join(__dirname,'core','modules')}
     static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'teeshop'}
@@ -36,41 +39,131 @@ class TeeShop extends Ear{
         )
         this.runConfigActions()
     }
+    defaultCli(){
+        let clis = []
+        this.database._addCli(
+            {
+                nom:'client',
+                prenom:'client',
+                username:'client',
+                adresse:'client',
+                telephone:'client',
+                mail:'client@client.com',
+                password:'teeteetee'
+            },(e,r)=>{
+                if(r&&r.hasOwnProperty('insertId')){
+                    this.database._getCli(
+                        r.insertId,cb
+                    )
+                }else{
+                    console.log(e)
+                    console.log(r)
+                    this.data.clients = clis
+                    cb(e,clis)
+                }
+            }
+        )
+    }
+    defaultAdmin(cb){
+        let adms = []
+        this.database._addAdm(
+            {
+                nom:'admin',
+                prenom:'admin',
+                username:'admin',
+                adresse:'admin',
+                telephone:'admin',
+                mail:'admin@admin.com',
+                password:'teeteetee'
+            },(e,r)=>{
+                if(r&&r.hasOwnProperty('insertId')){
+                    this.database._getAdm(
+                        r.insertId,cb
+                    )
+                }else{
+                    console.log(e)
+                    console.log(r)
+                    this.data.admins = adms
+                    cb(e,adms)
+                }
+            }
+        )
+    }
+
+
+
+
+
+
+    //ACTION
+
+    insertfunc(objtype){
+        console.log(objtype)
+        return (data,cb)=>{
+            console.log('got data ',data)
+            cb(null,'cool')
+        }
+    }
+
+    deletefunc(objtype){
+        console.log(objtype)
+        return (data,cb)=>{
+            console.log('got data ',data)
+            cb(null,'cool')
+        }
+    }
+
+    dataaction(actiontype,objtype,data,cb){
+        const action = (typeof this[`${actiontype}func`]).match('function') ? this[`${actiontype}func`] : null
+        const func = action ? action(objtype) : null
+        func ? func(data,cb) : cb('data action not found',null) 
+    }
+    
+
+
+
+
+
+
+    //DATA
+
     clients(cb){
         this.database._getClis(
             (e,clis)=>{
                 if(!clis.length){
-                    this.database._addCli(
-                        {
-                            nom:'client',
-                            prenom:'client',
-                            username:'client',
-                            adresse:'client',
-                            telephone:'client',
-                            mail:'client@client.com',
-                            password:'teeteetee'
-                        },(e,r)=>{
-                            if(r&&r.hasOwnProperty('insertId')){
-                                this.database._getCli(
-                                    r.insertId,(e,r)=>{
-                                        if(r.length){
-                                            clis.push(r[0])
-                                        }
-                                        this.data.clients = clis
-                                        cb(e,clis)
-                                    }
-                                )
-                            }else{
-                                console.log(e)
-                                console.log(r)
-                                this.data.clients = clis
-                                cb(e,clis)
+                    this.defaultCli(
+                        (e,r)=>{
+                            if(r.length){
+                                clis.push(r[0])
                             }
+                            this.data.clients = clis
+                            cb(e,clis)
                         }
                     )
                 }else{
                     this.data.clients = clis?clis:[]
                     cb(e,clis)
+                }
+            }
+        )
+    }
+    admins(cb){
+        this.database._getAdms(
+            (e,adms)=>{
+                if(!adms.length){
+                    this.defaultAdmin(
+                        (e,r)=>{
+                            if(r.length){
+                                adms.push(r[0])
+                            }
+                            this.data.admins = adms
+                            cb(e,adms)
+
+                        }
+                    )
+                }else{
+                    this.data.admins = adms
+                    cb(e,adms)
                 }
             }
         )
@@ -96,45 +189,6 @@ class TeeShop extends Ear{
             (e,cats)=>{
                 this.data.categories = cats
                 if(cb)cb(e,cats)
-            }
-        )
-    }
-    admins(cb){
-        this.database._getAdms(
-            (e,adms)=>{
-                if(!adms.length){
-                    this.database._addAdm(
-                        {
-                            nom:'admin',
-                            prenom:'admin',
-                            username:'admin',
-                            adresse:'admin',
-                            telephone:'admin',
-                            mail:'admin@admin.com',
-                            password:'teeteetee'
-                        },(e,r)=>{
-                            if(r&&r.hasOwnProperty('insertId')){
-                                this.database._getAdm(
-                                    r.insertId,(e,r)=>{
-                                        if(r.length){
-                                            adms.push(r[0])
-                                        }
-                                        this.data.admins = adms
-                                        cb(e,adms)
-                                    }
-                                )
-                            }else{
-                                console.log(e)
-                                console.log(r)
-                                this.data.admins = adms
-                                cb(e,adms)
-                            }
-                        }
-                    )
-                }else{
-                    this.data.admins = adms
-                    cb(e,adms)
-                }
             }
         )
     }
@@ -171,6 +225,7 @@ class TeeShop extends Ear{
 
         this.database.__cliCreds(
             {user,pass},(e,r)=>{
+                console.log(e)
                 cb(r&&r.length?r[0]:null)
             }
         )

@@ -297,7 +297,7 @@ class TeeShopData extends TeeData{
         this._setAdminsTable(TeeData._n_t().admins.name)
         
         this._setUsersLogField("username")
-        this._setAdminsTable("password")
+        this._setUsersPasswField("password")
         
         this._setAdminsLogField("username")
         this._setAdminsPasswField("password")
