@@ -125,6 +125,20 @@ class TeeShopData extends TeeData{
             }
         },
         {
+            name:'_getCatProds',cb:function (catid,cb){
+                const req = this.__selectFrom(TeeData._n_t().articles_categories.name,['*'],[['categorieid'],[`${catid}`]])
+                
+                this._db().query(
+                    req,(e,r)=>{
+                        if(r && r.length) r = r.map(
+                            elem=>this.processRawData(elem,'CatArticle')
+                        )
+                        cb(e,r)
+                    }
+                )
+            }
+        },
+        {
             name:'_getCats',cb:function (cb){
                 const req = this.__selectFrom(TeeData._n_t().categories.name,['*'])
                 this._db().query(

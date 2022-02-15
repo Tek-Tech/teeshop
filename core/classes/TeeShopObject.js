@@ -17,6 +17,10 @@ class TeeShopObject extends Ear{
         )
     }
 
+    isReady(){
+        return this.ready
+    }
+
     _type(){
         return typeof this
     }
