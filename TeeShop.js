@@ -5,7 +5,7 @@ const {Ear} = require("@tek-tech/ears")
 class TeeShop extends Ear{
     data = {}
     static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes'),modulespath:path.join(__dirname,'core','modules')}
-    static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'test1'}
+    static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'teeshop'}
     static _d_conf(){
         return this.defaultconf
     }
@@ -60,60 +60,94 @@ class TeeShop extends Ear{
         
         clients(
             (e,clis)=>{
-                this.data.clients = clis?clis:[]
-                try{
-                    admins(
-                        (e,adms)=>{
-                            const actions = ()=>{
-                                articles(
-                                    (e,prods)=>{
-                                        this.data.articles = prods
-                                        commandes(
-                                            (e,coms)=>{
-                                                this.data.commandes = coms
-                                                if(cb)cb(this)
-                                            }
-                                        )
-                                    }
-                                )
-                            }
-                            if(!adms.length){
-                                this.database._addAdm(
-                                    {
-                                        nom:'admin',
-                                        prenom:'admin',
-                                        username:'admin',
-                                        adresse:'admin',
-                                        telephone:'admin',
-                                        mail:'admin',
-                                        password:'teeteetee'
-                                    },(e,r)=>{
-                                        if(r&&r.hasOwnProperty('insertId')){
-                                            this.database._getAdm(
-                                                r.insertId,(e,r)=>{
-                                                    if(r.length){
-                                                        adms.push(r[0])
-                                                    }
-                                                    this.data.admins = adms
-                                                    actions()
+                const action = ()=>{
+                    try{
+                        admins(
+                            (e,adms)=>{
+                                const actions = ()=>{
+                                    articles(
+                                        (e,prods)=>{
+                                            this.data.articles = prods
+                                            commandes(
+                                                (e,coms)=>{
+                                                    this.data.commandes = coms
+                                                    if(cb)cb(this)
                                                 }
                                             )
-                                        }else{
-                                            console.log(e)
-                                            console.log(r)
-                                            this.data.admins = adms
-                                            actions()
                                         }
+                                    )
+                                }
+                                if(!adms.length){
+                                    this.database._addAdm(
+                                        {
+                                            nom:'admin',
+                                            prenom:'admin',
+                                            username:'admin',
+                                            adresse:'admin',
+                                            telephone:'admin',
+                                            mail:'admin@admin.com',
+                                            password:'teeteetee'
+                                        },(e,r)=>{
+                                            if(r&&r.hasOwnProperty('insertId')){
+                                                this.database._getAdm(
+                                                    r.insertId,(e,r)=>{
+                                                        if(r.length){
+                                                            adms.push(r[0])
+                                                        }
+                                                        this.data.admins = adms
+                                                        actions()
+                                                    }
+                                                )
+                                            }else{
+                                                console.log(e)
+                                                console.log(r)
+                                                this.data.admins = adms
+                                                actions()
+                                            }
+                                        }
+                                    )
+                                }else{
+                                    this.data.admins = adms
+                                    actions()
+                                }
+                            }
+                        )
+                    }catch(e){
+                        if(cb)cb(this)
+                    }
+                }
+                if(!clis.length){
+                    this.database._addCli(
+                        {
+                            nom:'client',
+                            prenom:'client',
+                            username:'client',
+                            adresse:'client',
+                            telephone:'client',
+                            mail:'client@client.com',
+                            password:'teeteetee'
+                        },(e,r)=>{
+                            if(r&&r.hasOwnProperty('insertId')){
+                                this.database._getCli(
+                                    r.insertId,(e,r)=>{
+                                        if(r.length){
+                                            clis.push(r[0])
+                                        }
+                                        this.data.clients = clis
+                                        action()
                                     }
                                 )
                             }else{
-                                this.data.admins = adms
-                                actions()
+                                console.log(e)
+                                console.log(r)
+                                this.data.clients = clis
+                                action()
                             }
                         }
                     )
-                }catch(e){
-                    if(cb)cb(this)
+                }else{
+                    this.data.clients = clis?clis:[]
+                    action()
                 }
             }
         )

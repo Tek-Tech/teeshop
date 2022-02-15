@@ -1,7 +1,7 @@
 const path = require('path')
 const TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
 
-class TeeShopAdmin extends TeeShopObject{
+class TeeShopUser extends TeeShopObject{
 
 
     initDeeBee(){
@@ -23,4 +23,4 @@ class TeeShopAdmin extends TeeShopObject{
 
 }
 
-module.exports = TeeShopAdmin
+module.exports = TeeShopUser

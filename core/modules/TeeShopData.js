@@ -176,7 +176,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Commande')
+                            elem=>this.processRawData(elem,'Cart')
                         )
                         cb(e,r)
                     }
@@ -189,7 +189,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Commande')
+                            elem=>this.processRawData(elem,'Cart')
                         )
                         cb(e,r)
                     }
@@ -202,7 +202,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Commande')
+                            elem=>this.processRawData(elem,'Cart')
                         )
                         cb(e,r)
                     }
