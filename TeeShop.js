@@ -141,9 +141,6 @@ class TeeShop extends Ear{
     }
     loguser(user,pass,cb,type='cli'){
         this[`log${type=='admin'||type=='adm'?'Adm':'Cli'}`](user,pass,user=>{
-            if(user){
-                user = this.database.processUserData(user,type=='admin'||type=='adm')
-            }
             cb(user)
         })
     }

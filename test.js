@@ -10,11 +10,16 @@ new TeeShop(TeeShop._d_conf(),TeeShop._d_creds(),(shop)=>{
     //     shop.data
     // )
 
-    shop.loguser(
-        'admin','teeteetee',(user)=>{
-            console.log(user)
-        },'admin'
+    shop.setData(
+        ()=>{
+            console.log(shop.data)
+        }
     )
+    // shop.loguser(
+    //     'admin','teeteetee',(user)=>{
+    //         console.log(user)
+    //     },'admin'
+    // )
 
 
 
