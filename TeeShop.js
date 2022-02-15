@@ -2,6 +2,9 @@ const fs = require('fs')
 const path = require('path')
 const {Ear} = require("@tek-tech/ears")
 
+String.prototype.capitalizeFirst = function(){
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 class TeeShop extends Ear{
 
     //CONF
@@ -97,12 +100,17 @@ class TeeShop extends Ear{
 
     //ACTION
 
-    insertfunc(objtype){
-        console.log(objtype)
-        return (data,cb)=>{
-            console.log('got data ',data)
-            cb(null,'cool')
-        }
+    insertfunc(thus,objtype,data,cb){
+        const keys = thus.getConfig('dataactionkeys')
+        const key = keys.hasOwnProperty(objtype) ? keys[objtype].capitalizeFirst() : null
+        const func = key ? `_add${key}` : null
+        const defaultFunc = ((data,cb)=>{
+            console.log('ran default func for ',data)
+        })
+        if((typeof thus.database[func]).match('function'))
+            (thus.database[func](...data,cb))
+        else
+            defaultFunc(data,cb)
     }
 
     deletefunc(objtype){
@@ -113,10 +121,9 @@ class TeeShop extends Ear{
         }
     }
 
-    dataaction(actiontype,objtype,data,cb){
+    dataaction(actiontype,objtype,cb,...data){
         const action = (typeof this[`${actiontype}func`]).match('function') ? this[`${actiontype}func`] : null
-        const func = action ? action(objtype) : null
-        func ? func(data,cb) : cb('data action not found',null) 
+        action ? action(this,objtype,data,cb) : cb('data action not found',null) 
     }
     
 
@@ -310,9 +317,47 @@ class TeeShop extends Ear{
         this.config[configname] = configvalue
     }
     setConfig(config){
+        this.assignConfig(
+            'dataactionkeys',{
+                commande:'com'
+                ,com:'com'
+                ,article:'prod'
+                ,prod:'prod'
+                ,art:'prod'
+                ,client:'cli'
+                ,cli:'cli'
+                ,user:'cli'
+                ,admin:'adm'
+                ,adm:'adm'
+                ,cat:'cat'
+                ,categorie:'cat'
+                ,category:'cat'
+                ,article_category:'catProd'
+                ,art_category:'catProd'
+                ,prod_category:'catProd'
+                ,article_categorie:'catProd'
+                ,art_categorie:'catProd'
+                ,prod_categorie:'catProd'
+                ,article_cat:'catProd'
+                ,art_cat:'catProd'
+                ,prod_cat:'catProd'
+                ,article_command:'catCom'
+                ,art_command:'catCom'
+                ,prod_command:'catCom'
+                ,article_commande:'catCom'
+                ,art_commande:'catCom'
+                ,prod_commande:'catCom'
+                ,article_com:'catCom'
+                ,art_com:'catCom'
+                ,prod_com:'catCom'
+            }
+        )
         Object.keys(config).forEach(
             configname=>this.assignConfig(configname,config[configname])
         )
+    }
+    getConfig(configname){
+        return (this.config.hasOwnProperty(configname)) ? this.config[configname] : null
     }
     constructor(config,dbcreds,cb){
         super()

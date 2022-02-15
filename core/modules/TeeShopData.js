@@ -62,7 +62,7 @@ class TeeShopData extends TeeData{
         {
             name:'_getProdByName'
             ,cb:function (name,cb){
-                const req = this.__selectFrom(TeeData.knownTables.articles.name,['*'],[['nom'],[`${name}`]])
+                const req = this.__selectFrom(TeeData.knownTables.articles.name,['*'],[['nom'],[`'${name}'`]])
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
@@ -72,7 +72,60 @@ class TeeShopData extends TeeData{
                     }
                 )
             }
-        },{
+        },
+        {
+            name:'_addProd'
+            ,cb:function ({nom,prix},cb){
+                const req = this.__insertINTO(TeeData.knownTables.articles.name,['nom','prix'],[`'${nom}'`,`'${prix}'`])
+                console.log(req)
+                this._db().query(
+                    req,cb
+                )
+            }
+        },
+        {
+            name:'_linkProd'
+            ,cb:function (target,targetid,prodid,cb){
+                if(!TeeData.knownTables.hasOwnProperty(target))cb('target not known',null)
+                else{
+                    const req = this.__insertINTO(TeeData.knownTables[target].name,[`${target.charAt(target.length-1)}id`,'articleid'],[`${targetid}`,`${prodid}`])
+                    this._db().query(
+                        req,cb
+                    )
+                }
+            }
+        },
+        {
+            name:'_addCatProd'
+            ,cb:function (catid,{nom,prix},cb){
+                this._addProd(
+                    {nom,prix},(e,r)=>{
+                        if(e)cb(e,r)
+                        else{
+                            this._linkProd(
+                                'categories',catid,{nom,prix},cb
+                            )
+                        }
+                    }
+                )
+            }
+        },
+        {
+            name:'_addComProd'
+            ,cb:function (catid,{nom,prix},cb){
+                this._addProd(
+                    {nom,prix},(e,r)=>{
+                        if(e)cb(e,r)
+                        else{
+                            this._linkProd(
+                                'commandes',catid,{nom,prix},cb
+                            )
+                        }
+                    }
+                )
+            }
+        },
+        {
             name:'_getCats',cb:function (cb){
                 const req = this.__selectFrom(TeeData._n_t().categories.name,['*'])
                 this._db().query(
@@ -102,7 +155,7 @@ class TeeShopData extends TeeData{
         {
             name:'_getCatByName'
             ,cb:function (name,cb){
-                const req = this.__selectFrom(TeeData.knownTables.categories.name,['*'],[['nom'],[`${name}`]])
+                const req = this.__selectFrom(TeeData.knownTables.categories.name,['*'],[['nom'],[`'${name}'`]])
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
@@ -115,8 +168,9 @@ class TeeShopData extends TeeData{
         },
         {
             name:'_addCat'
-            ,cb:function ({nom,prix},cb){
-                const req = this.__insertINTO(TeeData.knownTables.categories.name,['nom','prix'],[`${nom}`,`${prix}`])
+            ,cb:function ({nom},cb){
+                const req = this.__insertINTO(TeeData.knownTables.categories.name,['nom'],[`'${nom}'`])
+                console.log(req)
                 this._db().query(
                     req,cb
                 )
@@ -151,7 +205,7 @@ class TeeShopData extends TeeData{
         {
             name:'_addCli'
             ,cb:function ({nom,prenom,username,adresse,telephone,mail,password},cb){
-                const req = this.__insertINTO(TeeData.knownTables.clients.name,['nom','prenom','username','adresse','telephone','mail','password'],[`'${nom}'`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
+                const req = this.__insertINTO(TeeData.knownTables.clients.name,['nom','prenom','username','adresse','telephone','mail','password'],[`''${nom}''`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
                 this._db().query(
                     req,cb
                 )
@@ -238,7 +292,7 @@ class TeeShopData extends TeeData{
         {
             name:'_addAdm'
             ,cb:function ({nom,prenom,username,adresse,telephone,mail,password},cb){
-                const req = this.__insertINTO(TeeData.knownTables.admins.name,['nom','prenom','username','adresse','telephone','mail','password'],[`'${nom}'`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
+                const req = this.__insertINTO(TeeData.knownTables.admins.name,['nom','prenom','username','adresse','telephone','mail','password'],[`''${nom}''`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
                 this._db().query(
                     req,cb
                 )
