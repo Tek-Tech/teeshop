@@ -1,4 +1,6 @@
-class TeeShopObject{
+const { Ear } = require("@tek-tech/ears")
+
+class TeeShopObject extends Ear{
     configure(config){
         Object.keys(config).forEach(
             confname=>{
@@ -20,6 +22,7 @@ class TeeShopObject{
     }
 
     constructor(config,data){
+        super()
         this.config = {}
         this.rawdata = data
         this.configure(config)

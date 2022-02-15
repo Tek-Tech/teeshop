@@ -77,7 +77,6 @@ class TeeShopData extends TeeData{
             name:'_addProd'
             ,cb:function ({nom,prix},cb){
                 const req = this.__insertINTO(TeeData.knownTables.articles.name,['nom','prix'],[`'${nom}'`,`'${prix}'`])
-                console.log(req)
                 this._db().query(
                     req,cb
                 )
@@ -88,7 +87,7 @@ class TeeShopData extends TeeData{
             ,cb:function (target,targetid,prodid,cb){
                 if(!TeeData.knownTables.hasOwnProperty(target))cb('target not known',null)
                 else{
-                    const req = this.__insertINTO(TeeData.knownTables[target].name,[`${target.charAt(target.length-1)}id`,'articleid'],[`${targetid}`,`${prodid}`])
+                    const req = this.__insertINTO(TeeData.knownTables[`articles_${target}`].name,[`${target.replace(target.charAt(target.length-1),'')}id`,'articleid'],[`${targetid}`,`${prodid}`])
                     this._db().query(
                         req,cb
                     )
@@ -103,7 +102,7 @@ class TeeShopData extends TeeData{
                         if(e)cb(e,r)
                         else{
                             this._linkProd(
-                                'categories',catid,{nom,prix},cb
+                                'categories',catid,r.insertId,cb
                             )
                         }
                     }
@@ -118,7 +117,7 @@ class TeeShopData extends TeeData{
                         if(e)cb(e,r)
                         else{
                             this._linkProd(
-                                'commandes',catid,{nom,prix},cb
+                                'commandes',catid,r.insertId,cb
                             )
                         }
                     }
@@ -170,7 +169,7 @@ class TeeShopData extends TeeData{
             name:'_addCat'
             ,cb:function ({nom},cb){
                 const req = this.__insertINTO(TeeData.knownTables.categories.name,['nom'],[`'${nom}'`])
-                console.log(req)
+                
                 this._db().query(
                     req,cb
                 )
@@ -329,8 +328,7 @@ class TeeShopData extends TeeData{
     }
     
     processRawData(data,type){
-
-        type = this.shop.core.getObject(`TeeShop}${type}`)
+        type = this.shop.core.getObject(`TeeShop${type}`)
         return type ? new type.class({db:this},data) : data
 
     }

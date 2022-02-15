@@ -114,7 +114,6 @@ class TeeShop extends Ear{
     }
 
     deletefunc(objtype){
-        console.log(objtype)
         return (data,cb)=>{
             console.log('got data ',data)
             cb(null,'cool')
@@ -341,15 +340,15 @@ class TeeShop extends Ear{
                 ,article_cat:'catProd'
                 ,art_cat:'catProd'
                 ,prod_cat:'catProd'
-                ,article_command:'catCom'
-                ,art_command:'catCom'
-                ,prod_command:'catCom'
-                ,article_commande:'catCom'
-                ,art_commande:'catCom'
-                ,prod_commande:'catCom'
-                ,article_com:'catCom'
-                ,art_com:'catCom'
-                ,prod_com:'catCom'
+                ,article_command:'comProd'
+                ,art_command:'comProd'
+                ,prod_command:'comProd'
+                ,article_commande:'comProd'
+                ,art_commande:'comProd'
+                ,prod_commande:'comProd'
+                ,article_com:'comProd'
+                ,art_com:'comProd'
+                ,prod_com:'comProd'
             }
         )
         Object.keys(config).forEach(
