@@ -36,86 +36,9 @@ class TeeShop extends Ear{
         )
         this.runConfigActions()
     }
-    setData(cb){
-
-        const 
-            clients = (cb)=>{
-                this.database._getClis(
-                    cb
-                )
-            }
-            ,articles = (cb)=>{
-                this.database._getProds(
-                    cb
-                )
-            },commandes = (cb)=>{
-                this.database._getComs(
-                    cb
-                )
-            },admins = (cb)=>{
-                this.database._getAdms(
-                    cb
-                )
-            }
-        
-        clients(
+    clients(cb){
+        this.database._getClis(
             (e,clis)=>{
-                const action = ()=>{
-                    try{
-                        admins(
-                            (e,adms)=>{
-                                const actions = ()=>{
-                                    articles(
-                                        (e,prods)=>{
-                                            this.data.articles = prods
-                                            commandes(
-                                                (e,coms)=>{
-                                                    this.data.commandes = coms
-                                                    if(cb)cb(this)
-                                                }
-                                            )
-                                        }
-                                    )
-                                }
-                                if(!adms.length){
-                                    this.database._addAdm(
-                                        {
-                                            nom:'admin',
-                                            prenom:'admin',
-                                            username:'admin',
-                                            adresse:'admin',
-                                            telephone:'admin',
-                                            mail:'admin@admin.com',
-                                            password:'teeteetee'
-                                        },(e,r)=>{
-                                            if(r&&r.hasOwnProperty('insertId')){
-                                                this.database._getAdm(
-                                                    r.insertId,(e,r)=>{
-                                                        if(r.length){
-                                                            adms.push(r[0])
-                                                        }
-                                                        this.data.admins = adms
-                                                        actions()
-                                                    }
-                                                )
-                                            }else{
-                                                console.log(e)
-                                                console.log(r)
-                                                this.data.admins = adms
-                                                actions()
-                                            }
-                                        }
-                                    )
-                                }else{
-                                    this.data.admins = adms
-                                    actions()
-                                }
-                            }
-                        )
-                    }catch(e){
-                        if(cb)cb(this)
-                    }
-                }
                 if(!clis.length){
                     this.database._addCli(
                         {
@@ -134,23 +57,114 @@ class TeeShop extends Ear{
                                             clis.push(r[0])
                                         }
                                         this.data.clients = clis
-                                        action()
+                                        cb(e,clis)
                                     }
                                 )
                             }else{
                                 console.log(e)
                                 console.log(r)
                                 this.data.clients = clis
-                                action()
+                                cb(e,clis)
                             }
                         }
                     )
                 }else{
                     this.data.clients = clis?clis:[]
-                    action()
+                    cb(e,clis)
                 }
             }
         )
+    }
+    articles(cb){
+        this.database._getProds(
+            (e,prods)=>{
+                this.data.articles = prods
+                if(cb)cb(e,prods)
+            }
+        )
+    }
+    commandes(cb){
+        this.database._getComs(
+            (e,coms)=>{
+                this.data.commandes = coms
+                if(cb)cb(e,coms)
+            }
+        )
+    }
+    categories(cb){
+        this.database._getCats(
+            (e,cats)=>{
+                this.data.categories = cats
+                if(cb)cb(e,cats)
+            }
+        )
+    }
+    admins(cb){
+        this.database._getAdms(
+            (e,adms)=>{
+                if(!adms.length){
+                    this.database._addAdm(
+                        {
+                            nom:'admin',
+                            prenom:'admin',
+                            username:'admin',
+                            adresse:'admin',
+                            telephone:'admin',
+                            mail:'admin@admin.com',
+                            password:'teeteetee'
+                        },(e,r)=>{
+                            if(r&&r.hasOwnProperty('insertId')){
+                                this.database._getAdm(
+                                    r.insertId,(e,r)=>{
+                                        if(r.length){
+                                            adms.push(r[0])
+                                        }
+                                        this.data.admins = adms
+                                        cb(e,adms)
+                                    }
+                                )
+                            }else{
+                                console.log(e)
+                                console.log(r)
+                                this.data.admins = adms
+                                cb(e,adms)
+                            }
+                        }
+                    )
+                }else{
+                    this.data.admins = adms
+                    cb(e,adms)
+                }
+            }
+        )
+    }
+    setData(cb){
+        const admins = cb =>{
+            this.admins(
+                (e,r)=>clients(cb)
+            )
+        }
+        const clients = cb =>{
+            this.clients(
+                (e,r)=>categories(cb)
+            )
+        }
+        const commandes = cb =>{
+            this.commandes(
+                (e,r)=>cb(this)
+            )
+        }
+        const categories = cb =>{
+            this.categories(
+                (e,r)=>articles(cb)
+            )
+        }
+        const articles = cb =>{
+            this.articles(
+                (e,r)=>commandes(cb)
+            )
+        }
+        admins(cb)
 
     }
     logCli(user,pass,cb){
