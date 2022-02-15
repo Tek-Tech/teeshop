@@ -6,12 +6,15 @@ TeeShop._sd_creds()
 
 new TeeShop(TeeShop._d_conf(),TeeShop._d_creds(),(shop)=>{
 
-    console.log(
-        shop.data
+    // console.log(
+    //     shop.data
+    // )
+
+    shop.loguser(
+        'admin','teeteetee',(user)=>{
+            console.log(user)
+        },'admin'
     )
-
-
-
 
 
 

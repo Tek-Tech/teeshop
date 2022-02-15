@@ -70,7 +70,7 @@ module.exports = class extends Ear {
             const modpath = path.join(this.modulespath,mod)
             const conf = this.shoptype._d_conf() 
             const creds = this.shoptype._d_creds()
-            if(name == 'teeshopdata') args = [creds]
+            if(name == 'teeshopdata') args = [this.shop,creds]
             const Mod  = new (require(modpath))(...args)
             this.modules[name] = {
                 name,path:modpath,module:Mod

@@ -119,6 +119,34 @@ class TeeShop extends Ear{
         )
 
     }
+    logCli(user,pass,cb){
+
+        this.database.__cliCreds(
+            {user,pass},(e,r)=>{
+                cb(r&&r.length?r[0]:null)
+            }
+        )
+
+
+    }
+    logAdm(user,pass,cb){
+
+        this.database.__admCreds(
+            {user,pass},(e,r)=>{
+                cb(r&&r.length?r[0]:null)
+            }
+        )
+
+
+    }
+    loguser(user,pass,cb,type='cli'){
+        this[`log${type=='admin'||type=='adm'?'Adm':'Cli'}`](user,pass,user=>{
+            if(user){
+                user = this.database.processUserData(user,type=='admin'||type=='adm')
+            }
+            cb(user)
+        })
+    }
     runConfigActions(){
         if(this.configuredClassespath()) this.assignClasses()
         if(this.configuredCorepath()) this.assignCore()

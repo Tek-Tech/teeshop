@@ -7,9 +7,22 @@ const TeeData = require(path.join(objectspath,'TeeData'))
 
 class TeeShopData extends TeeData{
     
-
     static actions = [
         {
+            name:'__cliCreds',cb:function ({user,pass},cb){
+                const req = this.__selectFrom(TeeData._n_t().clients.name,['*'],[[this._getUsersLogField(),this._getUsersPasswField()],[`'${user}'`,`MD5('${pass}')`]])
+                this._db().query(
+                    req,cb
+                )
+            }
+        },{
+            name:'__admCreds',cb:function ({user,pass},cb){
+                const req = this.__selectFrom(TeeData._n_t().admins.name,['*'],[[this._getAdminsLogField(),this._getAdminsPasswField()],[`'${user}'`,`MD5('${pass}')`]])
+                this._db().query(
+                    req,cb
+                )
+            }
+        },{
             name:'_getProds',cb:function (cb){
                 const req = this.__selectFrom(TeeData._n_t().articles.name,['*'])
                 this._db().query(
@@ -136,16 +149,42 @@ class TeeShopData extends TeeData{
         }
     ]
 
+
+    processUserData(userdata,admin=false){
+
+        let returned = {} 
+        Object.keys(userdata).forEach(
+            info=>{
+                if(info!=='password') returned[info] = userdata[info]
+            }
+        )
+        userdata=returned
+        const usertype = this.shop.core.getObject(`TeeShop${admin?'Admin':'User'}`)
+        return usertype ? new usertype.class({db:this},userdata) : userdata
+
+    }
+
+
     initialize(cb){
         this.configureActions(...TeeShopData.actions)
         if(cb)cb()
     }
 
 
-    constructor(creds={},tables=[]){
+    constructor(shop,creds={},tables=[]){
     
         super(creds,tables.length?tables:TeeData._tables()?TeeData._tables():[])
 
+        this.shop = shop
+        this._setUsersTable(TeeData._n_t().clients.name)
+        this._setAdminsTable(TeeData._n_t().admins.name)
+        
+        this._setUsersLogField("username")
+        this._setAdminsTable("password")
+        
+        this._setAdminsLogField("username")
+        this._setAdminsPasswField("password")
+        
 
         this.initialize(()=>{
             console.log('implemented custom DeeBee actions')
