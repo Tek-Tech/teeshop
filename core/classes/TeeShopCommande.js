@@ -3,26 +3,53 @@ const TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
 
 class TeeShopCommande extends TeeShopObject{
 
+    whenGotArticles(cb){
+        if(!this.gotArticles()){
+            this.when(
+                'gotarticles',cb
+            )
+            return
+        }
+        this.getArticles(cb)
+    }
 
     articles(cb){
-        this.database._getComProds(
-            this.getData('id'),(e,r)=>{
-                if(e)console.log(e)
-                this.articles = r
-                if(cb)cb(this.articles)
+        this.whenGotDeeBee(
+            ()=>{
+                this.database._getCatProds(
+                    this.getData('id'),(e,r)=>{
+                        if(e)console.log(e)
+                        this._data.articles = r
+                        if(cb)cb(this._data.articles)
+                    }
+                )
             }
         )
     }
-    getData(name){
-        return this.hasOwnProperty('_data') ? this._data.hasOwnProperty(`${name}`) ? this._data[name] : null : null
+
+    gotArticles(){
+        return this.getData('articles')
     }
+
+    setData(cb){
+        this.articles(
+            articles=>{
+                this.gotarticles = true
+                this.trigger(
+                    'gotarticles',articles
+                )
+                if(cb)cb(this._data)
+            }
+        )
+    }
+
     init(cb){
         this.whenGotDeeBee(
             ()=>{
-                this.setReady()
-                this.articles(
-                    articles=>{
-                        if(cb)cb(articles)
+                this.setData(
+                    ()=>{
+                        this.setReady()
+                        if  (cb)  cb(this._data)
                     }
                 )
             }
@@ -42,12 +69,31 @@ class TeeShopCommande extends TeeShopObject{
         )
     }
 
+    getArticles(cb){
+        this.whenGotArticles(
+            cb
+        )
+    }
+
+    getArticle(id,cb,name){
+        this.getArticles(
+            articles=>{
+                let art = null
+                articles.forEach(
+                    article=>{
+                        if(article.getArticle().getData(name?'name':'id')==name?name:id) art = article
+                    }
+                )
+                if  (cb)  cb(art)
+            }
+        )
+    }
+
     constructor(config,data){
-        super(config,data)
+        super(config,data) 
         this.waitForDeeBee()
         this.init()
     }
-
 
 }
 

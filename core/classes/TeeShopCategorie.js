@@ -3,12 +3,15 @@ const TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
 
 class TeeShopCategorie extends TeeShopObject{
 
+    
     whenGotArticles(cb){
-        
-        this.when(
-            'gotarticles',cb
-        )
-
+        if(!this.gotArticles()){
+            this.when(
+                'gotarticles',cb
+            )
+            return
+        }
+        this.getArticles(cb)
     }
 
     articles(cb){
@@ -25,17 +28,29 @@ class TeeShopCategorie extends TeeShopObject{
         )
     }
 
+    gotArticles(){
+        return this.getData('articles')
+    }
+
+    setData(cb){
+        this.articles(
+            articles=>{
+                this.gotarticles = true
+                this.trigger(
+                    'gotarticles',articles
+                )
+                if(cb)cb(this._data)
+            }
+        )
+    }
+
     init(cb){
         this.whenGotDeeBee(
             ()=>{
-                this.setReady()
-                this.articles(
-                    articles=>{
-                        this.gotarticles = true
-                        this.trigger(
-                            'gotarticles',articles
-                        )
-                        if(cb)cb(articles)
+                this.setData(
+                    ()=>{
+                        this.setReady()
+                        if  (cb)  cb(this._data)
                     }
                 )
             }
@@ -55,16 +70,22 @@ class TeeShopCategorie extends TeeShopObject{
         )
     }
 
-    getArticle(id,cb,name){
+    getArticles(cb){
         this.whenGotArticles(
-            ()=>{
+            cb
+        )
+    }
+
+    getArticle(id,cb,name){
+        this.getArticles(
+            articles=>{
                 let art = null
-                this.getData('articles').forEach(
+                articles.forEach(
                     article=>{
                         if(article.getArticle().getData(name?'name':'id')==name?name:id) art = article
                     }
                 )
-                cb(art)
+                if  (cb)  cb(art)
             }
         )
     }

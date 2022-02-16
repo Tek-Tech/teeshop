@@ -16,7 +16,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processUserData(elem)
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -28,7 +28,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processUserData(elem,admin)
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -40,7 +40,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Article')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -54,7 +54,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Article')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -68,7 +68,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Article')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -133,7 +133,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'CatArticle')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -146,7 +146,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Categorie')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -160,7 +160,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Categorie')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -174,7 +174,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Categorie')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -197,7 +197,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processUserData(elem)
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -210,7 +210,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processUserData(elem)
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -232,7 +232,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processUserData(elem)
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -245,7 +245,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Cart')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -258,7 +258,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Cart')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -271,7 +271,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Cart')
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -284,7 +284,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processUserData(elem,true)
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -297,7 +297,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processUserData(elem,true)
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }
@@ -319,7 +319,7 @@ class TeeShopData extends TeeData{
                         if(r && r.length) r = r.map(
                             elem=>this.processUserData(elem,true)
                         )
-                        cb(e,r)
+                        if(cb)cb(e,r)
                     }
                 )
             }

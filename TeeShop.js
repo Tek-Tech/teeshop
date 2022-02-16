@@ -116,7 +116,6 @@ class TeeShop extends Ear{
     deletefunc(objtype){
         return (data,cb)=>{
             console.log('got data ',data)
-            cb(null,'cool')
         }
     }
 

@@ -4,9 +4,17 @@ class TeeShopObject extends Ear{
 
 
     whenGotDeeBee(cb){
-        this.when(
-            'gotdeebee',cb
-        )
+        if(!this.gotDeeBee()){
+            this.when(
+                'gotdeebee',cb
+            )
+            return
+        }
+        cb(this.database)
+    }
+
+    gotDeeBee(){
+        return this.hasOwnProperty('database')
     }
 
     waitForDeeBee(){
@@ -15,10 +23,13 @@ class TeeShopObject extends Ear{
                 if(this.config.hasOwnProperty('db')){
                     this.database = this.config.db
                     this.trigger('gotdeebee','ok')
-                    clearInterval(this.waitdbinterval)
+                    this.stopWaitingForDeeBee()
                 }
             },1000
         )
+    }
+    stopWaitingForDeeBee(){
+        clearInterval(this.waitdbinterval)
     }
 
 

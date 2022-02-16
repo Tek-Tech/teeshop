@@ -15,7 +15,7 @@ new TeeShop(TeeShop._d_conf(),TeeShop._d_creds(),(shop)=>{
                     if(categories&&categories.length){
                         categories.map(
                             cat=>{
-                                cat.articles(
+                                cat.getArticles(
                                     articles=>{
                                         if(articles&&articles.length)console.log(articles)
                                     }
