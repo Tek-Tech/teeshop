@@ -6,13 +6,25 @@ const TeeShopObject = require(path.join(classespath,"TeeShopObject"))
 class TeeCatManager extends TeeShopObject{
 
 
+    _new(nom,cb){
+        this.whenGotDeeBee(
+            ()=>{
+                this.database._addCat(
+                    {nom},(e,r)=>{
+                        this.config.shop.setData(cb)
+                    }
+                )
+            }
+        )
+    }
+
     getCategorie(id,name,cb){
         let found = null
         this.getCategories(
             cats=>{
                 cats.forEach(
                     cat=>{
-                        if (cat.getData(name?'name':'id') == name?name:id) found = cat
+                        if (cat.getData(name?'nom':'id') == name?name:id) found = cat
                     }
                 )
                 cb(found)
@@ -30,8 +42,12 @@ class TeeCatManager extends TeeShopObject{
         this.getCategories(
             cats=>{
                 cats.forEach(
-                    cat=>{
-                        
+                    (cat,idx)=>{
+                        cat.setData(
+                            ()=>{
+                                if(idx+1==cats.length)cb(this)
+                            }
+                        )
                     }
                 )
             }
@@ -40,14 +56,19 @@ class TeeCatManager extends TeeShopObject{
     init(cb){
         this.whenGotDeeBee(
             ()=>{
-                this.setReady()
+                this.updateCategories(
+                    ()=>{
+                        this.setReady()
+                        if(cb)cb(this)
+                        console.log('ready')
+                    }
+                )
             }
         )
     }
 
 
     constructor(config,data){
-        super(config,data)
         super(config,data) 
         this.waitForDeeBee()
         this.init()

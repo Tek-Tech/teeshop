@@ -1,6 +1,5 @@
 
 const path = require('path')
-const classespath = path.join(__dirname,"..","classes")
 const objectspath = path.join(__dirname,'..','objects')
 const TeeData = require(path.join(objectspath,'TeeData'))
 

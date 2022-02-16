@@ -36,6 +36,11 @@ class TeeShopObject extends Ear{
     getData(name){
         return this.hasOwnProperty('_data') ? this._data.hasOwnProperty(`${name}`) ? this._data[name] : null : null
     }
+
+
+    getConfig(name){
+        return this.hasOwnProperty('config') ? this.config.hasOwnProperty(`${name}`) ? this.config[name] : null : null
+    }
     
     assignData(){
         this._data = this.hasOwnProperty('_data') ? this._data : {} 

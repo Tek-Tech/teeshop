@@ -10,7 +10,7 @@ class TeeShop extends Ear{
     //CONF
 
     data = {}
-    static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes'),modulespath:path.join(__dirname,'core','modules')}
+    static defaultconf = {corepath:path.join(__dirname,'core'),classespath:path.join(__dirname,'core','classes'),modulespath:path.join(__dirname,'core','modules'),objectspath:path.join(__dirname,'core','objects')}
     static defaultcreds = {host:'127.0.0.1',user:'root',password:'',database:'teeshop'}
     static _d_conf(){
         return this.defaultconf
@@ -100,6 +100,31 @@ class TeeShop extends Ear{
 
     //ACTION
 
+
+
+    _new_categorie(nom,cb){
+        // console.log(this.getData(
+
+        //     'categories'
+
+        // ))
+        this.getData(
+
+            'categories'
+
+        )   ?   
+                this.getData(
+                    'categories'
+                )._new(nom,cb)
+            
+            :   cb(
+
+                null
+            )
+    
+    }
+
+
     insertfunc(thus,objtype,data,cb){
         const keys = thus.getConfig('dataactionkeys')
         const key = keys.hasOwnProperty(objtype) ? keys[objtype].capitalizeFirst() : null
@@ -132,6 +157,9 @@ class TeeShop extends Ear{
 
     //DATA
 
+    getData(data){
+        return (this.data.hasOwnProperty(data)?this.data[data]:null)
+    }
     clients(cb){
         this.database._getClis(
             (e,clis)=>{
@@ -192,8 +220,8 @@ class TeeShop extends Ear{
     categories(cb){
         this.database._getCats(
             (e,cats)=>{
-                this.data.categories = cats
-                if(cb)cb(e,cats)
+                this.data.categories = new (require(path.join(this.getObjectsPath(),'TeeCatManager')))({shop:this,db:this.database},{categories:cats})
+                if(cb)cb(e,this.data.categories)
             }
         )
     }
@@ -205,25 +233,17 @@ class TeeShop extends Ear{
         )
     }
     getCategorie(id,cb,name){
-        this.categories(
-            ()=>{
-                let found = null
-                this.data.categories.forEach(
-                    cat=>{
-                        if(cat.getData(name?'name':'id') == name?name:id) found = cat
-                    }
-                )
-                cb(found)
-            }
+        this.data.categories.getCategorie(
+            id,name,cb
         )
     }
     getArticleCategorie(catid,artid,cb,catname,name){
         this.getCategorie(
-            catid,(category)=>{
+            catid,catname,(category)=>{
                 category.getArticle(
                     artid,cb,name
                 )
-            },catname
+            }
         )
     }
     getArticleCommande(catid,artid,cb,catname,name){
@@ -348,6 +368,9 @@ class TeeShop extends Ear{
     getModulesPath(){
         return this.config.modulespath
     }
+    getObjectsPath(){
+        return this.config.objectspath
+    }
     getCorePath(){
         return this.config.corepath
     }
@@ -356,6 +379,9 @@ class TeeShop extends Ear{
     }
     configuredClassespath(){
         return this.config.hasOwnProperty('classespath')
+    }
+    configuredObjectspath(){
+        return this.config.hasOwnProperty('objectspath')
     }
     configuredModulespath(){
         return this.config.hasOwnProperty('modulespath')
