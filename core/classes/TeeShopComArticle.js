@@ -1,10 +1,9 @@
 const path = require('path')
 const TeeShopArticle = require(path.join(__dirname,'TeeShopArticle'))
 
-class TeeShopCatArticle extends TeeShopArticle{
+class TeeShopComArticle extends TeeShopArticle{
 
-    
-
+    isComArticle = true
 
     addTo(catid,cb){
         super.addTo(
@@ -25,4 +24,4 @@ class TeeShopCatArticle extends TeeShopArticle{
 
 }
 
-module.exports = TeeShopCatArticle
+module.exports = TeeShopComArticle

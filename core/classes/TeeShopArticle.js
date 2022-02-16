@@ -35,10 +35,12 @@ class TeeShopArticle extends TeeShopObject{
         }
     }
 
-    initDeeBee(){
-        if(this.config.db){
-            
-        }
+    initDeeBee(cb){
+        this.whenGotDeeBee(
+            ()=>{
+                if(cb)cb()
+            }
+        )
     }
 
     init(){
@@ -47,6 +49,8 @@ class TeeShopArticle extends TeeShopObject{
 
     constructor(config,data){
         super(config,data)
+        this.waitForDeeBee()
+        this.initDeeBee()
     }
 
 

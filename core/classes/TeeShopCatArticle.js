@@ -4,6 +4,7 @@ const TeeShopArticle = require(path.join(__dirname,'TeeShopArticle'))
 class TeeShopCatArticle extends TeeShopArticle{
 
 
+    isCatArticle = true
 
     addTo(catid,cb){
         super.addTo(
@@ -17,9 +18,34 @@ class TeeShopCatArticle extends TeeShopArticle{
         )
     }
 
+    setData(cb){
+        const id = this.getId()
+        this.whenGotDeeBee(
+            ()=>{
+                this.database._getProd(
+                    id,(e,article)=>{
+                        this.article = article
+                        this._data.article = article
+                        if(cb)cb(this.article)
+                    }
+                )
+
+            }
+        )
+    }
+
+    getArticle(){
+        return this.getData('article')
+    }
+
+    getId(){
+        return this.articleid
+    }
+
 
     constructor(config,data){
         super(config,data)
+        this.setData()
     }
 
 }

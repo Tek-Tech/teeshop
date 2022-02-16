@@ -4,37 +4,12 @@ const TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
 class TeeShopCommande extends TeeShopObject{
 
 
-
-    whenGotDeeBee(cb){
-        this.when(
-            'gotdeebee',cb
-        )
-    }
-    waitForDeeBee(){
-        this.waitdbinterval = setInterval(
-            ()=>{
-                if(this.config.hasOwnProperty('db')){
-                    this.database = this.config.db
-                    this.trigger('gotdeebee','ok')
-                    clearInterval(this.waitdbinterval)
-                }
-            },1000
-        )
-    }
     articles(cb){
         this.database._getComProds(
             this.getData('id'),(e,r)=>{
                 if(e)console.log(e)
                 this.articles = r
                 if(cb)cb(this.articles)
-            }
-        )
-    }
-    assignData(){
-        this._data = this.hasOwnProperty('_data') ? this._data : {} 
-        Object.keys(this.rawdata).forEach(
-            key=>{
-                this._data[key] = this.rawdata[key]
             }
         )
     }
@@ -47,7 +22,6 @@ class TeeShopCommande extends TeeShopObject{
                 this.setReady()
                 this.articles(
                     articles=>{
-                        console.log('command articles')
                         if(cb)cb(articles)
                     }
                 )
@@ -70,8 +44,6 @@ class TeeShopCommande extends TeeShopObject{
 
     constructor(config,data){
         super(config,data)
-
-        this.assignData() 
         this.waitForDeeBee()
         this.init()
     }

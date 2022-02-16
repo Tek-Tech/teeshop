@@ -198,6 +198,55 @@ class TeeShop extends Ear{
             }
         )
     }
+    getCategories(cb){
+        this.categories(
+            ()=>{
+                cb(this.data.categories)
+            }
+        )
+    }
+    getCategorie(id,cb,name){
+        this.categories(
+            ()=>{
+                let found = null
+                this.data.categories.forEach(
+                    cat=>{
+                        if(cat.getData(name?'name':'id') == name?name:id) found = cat
+                    }
+                )
+                cb(found)
+            }
+        )
+    }
+    getArticleCategorie(catid,artid,cb,catname,name){
+        this.getCategorie(
+            catid,(category)=>{
+                category.getArticle(
+                    artid,cb,name
+                )
+            },catname
+        )
+    }
+    getArticleCommande(catid,artid,cb,catname,name){
+        this.categories(
+            ()=>{
+                let found = null
+                this.data.categories.forEach(
+                    cat=>{
+                        if(cat.getData(catname?'name':'id') == catname?catname:catid) found = cat
+                    }
+                )
+                if(!found)cb(found)
+                let art = null
+                found.getData('articles').forEach(
+                    article=>{
+                        if(article.getArticle().getData(name?'name':'id')==name?name:artid) art = article
+                    }
+                )
+                cb(art)
+            }
+        )
+    }
     setData(cb){
         const admins = cb =>{
             this.admins(

@@ -48,7 +48,7 @@ class TeeShopData extends TeeData{
         {
             name:'_getProd'
             ,cb:function (id,cb){
-                const req = this.__selectFrom(TeeData.knownTables.articles.name,['*'],[['nom'],[`${id}`]])
+                const req = this.__selectFrom(TeeData.knownTables.articles.name,['*'],[['id'],[`${id}`]])
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
