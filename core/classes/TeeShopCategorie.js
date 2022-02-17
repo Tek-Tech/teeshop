@@ -63,7 +63,13 @@ class TeeShopCategorie extends TeeShopObject{
                 this.database._addProd({nom,prix},(e,r)=>{
                     if(e)cb(e,null)
                     else this.database._linkProd(
-                        'categories',this.getData('id'),r.insertId,cb
+                        'categories',this.getData('id'),r.insertId,()=>{
+                            this.setData(
+                                ()=>{
+                                    cb(e,r)
+                                }
+                            )
+                        }
                     )
                 })
             }

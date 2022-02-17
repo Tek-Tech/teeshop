@@ -217,7 +217,7 @@ class TeeShopData extends TeeData{
         {
             name:'_addCli'
             ,cb:function ({nom,prenom,username,adresse,telephone,mail,password},cb){
-                const req = this.__insertINTO(TeeData.knownTables.clients.name,['nom','prenom','username','adresse','telephone','mail','password'],[`''${nom}''`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
+                const req = this.__insertINTO(TeeData.knownTables.clients.name,['nom','prenom','username','adresse','telephone','mail','password'],[`'${nom}'`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
                 this._db().query(
                     req,cb
                 )
@@ -276,6 +276,16 @@ class TeeShopData extends TeeData{
             }
         },
         {
+            name:'_addCom'
+            ,cb:function ({userid},cb){
+                const req = this.__insertINTO(TeeData.knownTables.commandes.name,['userid'],[`${userid}`])
+                
+                this._db().query(
+                    req,cb
+                )
+            }
+        },
+        {
             name:'_getAdms',cb:function (cb){
                 const req = this.__selectFrom(TeeData._n_t().admins.name,['*'])
                 this._db().query(
@@ -304,7 +314,7 @@ class TeeShopData extends TeeData{
         {
             name:'_addAdm'
             ,cb:function ({nom,prenom,username,adresse,telephone,mail,password},cb){
-                const req = this.__insertINTO(TeeData.knownTables.admins.name,['nom','prenom','username','adresse','telephone','mail','password'],[`''${nom}''`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
+                const req = this.__insertINTO(TeeData.knownTables.admins.name,['nom','prenom','username','adresse','telephone','mail','password'],[`'${nom}'`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])
                 this._db().query(
                     req,cb
                 )

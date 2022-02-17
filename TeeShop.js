@@ -42,7 +42,7 @@ class TeeShop extends Ear{
         )
         this.runConfigActions()
     }
-    defaultCli(){
+    defaultCli(cb){
         let clis = []
         this.database._addCli(
             {
@@ -124,32 +124,27 @@ class TeeShop extends Ear{
     
     }
 
+    _new_commande(userid,cb){
+        // console.log(this.getData(
 
-    insertfunc(thus,objtype,data,cb){
-        const keys = thus.getConfig('dataactionkeys')
-        const key = keys.hasOwnProperty(objtype) ? keys[objtype].capitalizeFirst() : null
-        const func = key ? `_add${key}` : null
-        const defaultFunc = ((data,cb)=>{
-            console.log('ran default func for ',data)
-        })
-        if((typeof thus.database[func]).match('function'))
-            (thus.database[func](...data,cb))
-        else
-            defaultFunc(data,cb)
-    }
+        //     'commandes'
 
-    deletefunc(objtype){
-        return (data,cb)=>{
-            console.log('got data ',data)
-        }
-    }
+        // ))
+        this.getData(
 
-    dataaction(actiontype,objtype,cb,...data){
-        const action = (typeof this[`${actiontype}func`]).match('function') ? this[`${actiontype}func`] : null
-        action ? action(this,objtype,data,cb) : cb('data action not found',null) 
-    }
+            'commandes'
+
+        )   ?   
+                this.getData(
+                    'commandes'
+                )._new(userid,cb)
+            
+            :   cb(
+
+                null
+            )
     
-
+    }
 
 
 
@@ -205,15 +200,31 @@ class TeeShop extends Ear{
         this.database._getProds(
             (e,prods)=>{
                 this.data.articles = prods
-                if(cb)cb(e,prods)
+                cb(e,prods)
             }
         )
     }
     commandes(cb){
         this.database._getComs(
             (e,coms)=>{
-                this.data.commandes = coms
-                if(cb)cb(e,coms)
+                this.data.commandes = new (require(path.join(this.getObjectsPath(),'TeeComManager')))({shop:this,db:this.database},{commandes:coms})
+                cb(e,coms)
+            }
+        )
+    }
+    getCommandes(cb){
+        this.commandes(
+            ()=>{
+                cb(this.data.commandes)
+            }
+        )
+    }
+    getCommande(id,cb,userid){
+        this.data.commandes.getCommande(
+            id,userid,commande=>{
+                commande?commande.setData(
+                    cb
+                ):cb(commande)
             }
         )
     }
@@ -221,7 +232,7 @@ class TeeShop extends Ear{
         this.database._getCats(
             (e,cats)=>{
                 this.data.categories = new (require(path.join(this.getObjectsPath(),'TeeCatManager')))({shop:this,db:this.database},{categories:cats})
-                if(cb)cb(e,this.data.categories)
+                cb(e,this.data.categories)
             }
         )
     }
@@ -268,7 +279,7 @@ class TeeShop extends Ear{
     }
     setData(cb){
         const admins = cb =>{
-            this.admins(
+            this.admins( 
                 (e,r)=>clients(cb)
             )
         }
@@ -390,41 +401,6 @@ class TeeShop extends Ear{
         this.config[configname] = configvalue
     }
     setConfig(config){
-        this.assignConfig(
-            'dataactionkeys',{
-                commande:'com'
-                ,com:'com'
-                ,article:'prod'
-                ,prod:'prod'
-                ,art:'prod'
-                ,client:'cli'
-                ,cli:'cli'
-                ,user:'cli'
-                ,admin:'adm'
-                ,adm:'adm'
-                ,cat:'cat'
-                ,categorie:'cat'
-                ,category:'cat'
-                ,article_category:'catProd'
-                ,art_category:'catProd'
-                ,prod_category:'catProd'
-                ,article_categorie:'catProd'
-                ,art_categorie:'catProd'
-                ,prod_categorie:'catProd'
-                ,article_cat:'catProd'
-                ,art_cat:'catProd'
-                ,prod_cat:'catProd'
-                ,article_command:'comProd'
-                ,art_command:'comProd'
-                ,prod_command:'comProd'
-                ,article_commande:'comProd'
-                ,art_commande:'comProd'
-                ,prod_commande:'comProd'
-                ,article_com:'comProd'
-                ,art_com:'comProd'
-                ,prod_com:'comProd'
-            }
-        )
         Object.keys(config).forEach(
             configname=>this.assignConfig(configname,config[configname])
         )

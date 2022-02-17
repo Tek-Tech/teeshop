@@ -44,6 +44,7 @@ module.exports = {
             ["id","INT",["NOT NULL","AUTO_INCREMENT"]]
             ,["articleid","INT",["NOT NULL"]]
             ,["commandeid","INT",["NOT NULL"]]
+            ,["quantite","INT",["DEFAULT 1"]]
         ]
         ,[
             'id',[]
