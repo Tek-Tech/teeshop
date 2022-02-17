@@ -1,6 +1,6 @@
 {
   "name": "@tek-tech/teeshop",
-  "version": "0.0.1-objects",
+  "version": "0.1.0-beta",
   "description": "",
   "main": "TeeShop.js",
   "scripts": {
