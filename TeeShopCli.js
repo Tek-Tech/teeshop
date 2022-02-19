@@ -2,9 +2,9 @@ class TeeShopCli extends Ears{
 
 
     data = {
-        categories = []
-        ,articles  = []
-        ,commandes = []
+        categories : []
+        ,articles  : []
+        ,commandes : []
     }
 
     getData(cb){
