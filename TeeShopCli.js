@@ -1,4 +1,4 @@
-class TeeShopCli extends Ears{
+class TeeShopCli extends Ear{
 
 
     data = {
@@ -13,12 +13,8 @@ class TeeShopCli extends Ears{
         this.askCategories(
             (cats)=>{
                 this.data.categories = cats
-                this.askArticles(
-                    (arts)=>{
-                        this.data.articles = arts
-                        if(cb)cb()
-                    }
-                )
+                this.setReady()
+                if(cb)cb()
             }
         )
 
@@ -68,8 +64,16 @@ class TeeShopCli extends Ears{
 
     constructor(){
         super()
+        console.log("RUNNING TSHOP...")
+        console.log("Auteur: EL HADJI SEYBATOU MBENGUE (TEK-TECH)")
+        console.log('http://tektech.rf.gd')
         this.sio = new PageSocket()
         this.init()
+        this.whenReady(
+            ()=>{
+                console.log("TEESHOP INITIALISED")
+            }
+        )
     }
 
 
