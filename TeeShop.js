@@ -29,6 +29,9 @@ class TeeShop extends Ear{
             action
         )
     }
+    cliClass(){
+        return fs.readFileSync(path.join(__dirname,'TeeShopCli.js'))
+    }
     checkIfReady(){
         if(this.coreready&&this.dbready) this.ready = 1
     }
