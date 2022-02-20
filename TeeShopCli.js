@@ -14,25 +14,34 @@ class TeeShopCli extends Ear{
             (cats)=>{
                 this.data.categories = cats
                 this.setReady()
+                if(currentpage == 'admin') this.hasOwnProperty('refreshTabView') ? this.refreshTabView() : null
                 if(cb)cb()
             }
         )
 
     
     }
-
+    
+    renderCategorieArticle(article){
+        return `
+            <li id='${article.id}' class='article'>
+                ${article.nom}
+            </li>
+        `
+    }
 
     renderCategorieArticles(cat){
         return `
-            ${cat.articles.map(
-                article=>{
-                    return `
-                        <li id='${article.id}' class='article'>
-                            ${article.name}
-                        </li>
-                    `
-                }
-            )}
+            <ul class='categorie'>
+                <h1>
+                    ${cat.nom}
+                </h1>
+                ${cat.articles.map(
+                    article=>{
+                        return this.renderCategorieArticle(article)
+                    }
+                ).join('\n')}
+            </ul>
         `
     }
 
