@@ -25,7 +25,8 @@ class TeeShopCli extends Ear{
     renderCategorieArticle(article){
         return `
             <li id='${article.id}' class='article'>
-                ${article.nom}
+                <img src='/illuprods/${article.illu}'>
+                <span>${article.nom}</span>
             </li>
         `
     }
@@ -36,11 +37,15 @@ class TeeShopCli extends Ear{
                 <h1>
                     ${cat.nom}
                 </h1>
-                ${cat.articles.map(
-                    article=>{
-                        return this.renderCategorieArticle(article)
-                    }
-                ).join('\n')}
+                <li>
+                    <ul  class='articles'>
+                        ${cat.articles.map(
+                            article=>{
+                                return this.renderCategorieArticle(article)
+                            }
+                        ).join('\n')}
+                    </ul>
+                </li>
             </ul>
         `
     }
