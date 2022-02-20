@@ -55,6 +55,7 @@ module.exports = {
             ["id","INT",["NOT NULL","AUTO_INCREMENT"]]
             ,["nom","TEXT",["NOT NULL"]]
             ,["prix","INT",["NOT NULL"]]
+            ,["illu","TEXT",["NOT NULL"]]
         ]
         ,[
             'id',[]
@@ -64,6 +65,7 @@ module.exports = {
         ,[
             ["id","INT",["NOT NULL","AUTO_INCREMENT"]]
             ,["nom","TEXT",["NOT NULL"]]
+            ,["illu","TEXT",["NOT NULL"]]
         ]
         ,[
             'id',[]

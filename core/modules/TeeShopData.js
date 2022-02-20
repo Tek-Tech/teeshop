@@ -74,8 +74,8 @@ class TeeShopData extends TeeData{
         },
         {
             name:'_addProd'
-            ,cb:function ({nom,prix},cb){
-                const req = this.__insertINTO(TeeData.knownTables.articles.name,['nom','prix'],[`'${nom}'`,`'${prix}'`])
+            ,cb:function ({nom,prix,illu},cb){
+                const req = this.__insertINTO(TeeData.knownTables.articles.name,['nom','prix','illu'],[`'${nom}'`,`'${prix}'`,`'${illu}'`])
                 console.log(req)
                 this._db().query(
                     req,cb
@@ -98,9 +98,9 @@ class TeeShopData extends TeeData{
         },
         {
             name:'_addCatProd'
-            ,cb:function (catid,{nom,prix},cb){
+            ,cb:function (catid,{nom,prix,illu},cb){
                 this._addProd(
-                    {nom,prix},(e,r)=>{
+                    {nom,prix,illu},(e,r)=>{
                         if(e)cb(e,r)
                         else{
                             this._linkProd(
@@ -183,8 +183,8 @@ class TeeShopData extends TeeData{
         },
         {
             name:'_addCat'
-            ,cb:function ({nom},cb){
-                const req = this.__insertINTO(TeeData.knownTables.categories.name,['nom'],[`'${nom}'`])
+            ,cb:function ({nom,illu},cb){
+                const req = this.__insertINTO(TeeData.knownTables.categories.name,['nom','illu'],[`'${nom}'`,`'${illu}'`])
                 
                 this._db().query(
                     req,cb

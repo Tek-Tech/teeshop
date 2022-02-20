@@ -6,11 +6,12 @@ const TeeShopObject = require(path.join(classespath,"TeeShopObject"))
 class TeeCatManager extends TeeShopObject{
 
 
-    _new(nom,cb){
+    _new(nom,illu,cb){
         this.whenGotDeeBee(
             ()=>{
                 this.database._addCat(
-                    {nom},(e,r)=>{
+                    {nom,illu},(e,r)=>{
+                        if(e)console.log(e)
                         this.config.shop.setData(cb)
                     }
                 )
@@ -22,7 +23,6 @@ class TeeCatManager extends TeeShopObject{
         let found = null
         this.getCategories(
             cats=>{
-                console.log(cats,'are cats')
                 cats.forEach(
                     cat=>{
                         const searchee = cat.getData(name?'nom':'id')

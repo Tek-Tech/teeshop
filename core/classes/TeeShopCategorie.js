@@ -10,8 +10,9 @@ class TeeShopCategorie extends TeeShopObject{
                 'gotarticles',cb
             )
             return
+        }else{
+            cb()
         }
-        this.getArticles(cb)
     }
 
     articles(cb){
@@ -29,7 +30,7 @@ class TeeShopCategorie extends TeeShopObject{
     }
 
     gotArticles(){
-        return this.getData('articles')
+        return this.gotarticles
     }
 
     setData(cb){
@@ -57,10 +58,10 @@ class TeeShopCategorie extends TeeShopObject{
         )
     }
 
-    addArticle({nom,prix},cb){
+    addArticle({nom,prix,illu},cb){
         this.whenGotDeeBee(
             ()=>{
-                this.database._addProd({nom,prix},(e,r)=>{
+                this.database._addProd({nom,prix,illu},(e,r)=>{
                     if(e)cb(e,null)
                     else this.database._linkProd(
                         'categories',this.getData('id'),r.insertId,(e,r)=>{

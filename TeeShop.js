@@ -106,7 +106,7 @@ class TeeShop extends Ear{
 
 
 
-    _new_categorie(nom,cb){
+    _new_categorie(nom,illu,cb){
         // console.log(this.getData(
 
         //     'categories'
@@ -119,7 +119,7 @@ class TeeShop extends Ear{
         )   ?   
                 this.getData(
                     'categories'
-                )._new(nom,cb)
+                )._new(nom,illu,cb)
             
             :   cb(
 
@@ -128,7 +128,7 @@ class TeeShop extends Ear{
     
     }
     
-    _new_article_categorie(catid,nom,prix,cb){
+    _new_article_categorie(catid,nom,prix,illu,cb){
         // console.log(this.getData(
 
         //     'categories'
@@ -144,7 +144,7 @@ class TeeShop extends Ear{
                         if(!cat) cb(null)
                         else{
                             cat.addArticle(
-                                {nom,prix}
+                                {nom,prix,illu}
                                 ,(e,r)=>{
                                     if(e)console.log(e)
                                     cb(r)
@@ -340,27 +340,30 @@ class TeeShop extends Ear{
         )
     }
     setData(cb){
-        const admins = cb =>{
+        let callback = cb
+        const admins = () =>{
             this.admins( 
                 (e,r)=>clients(cb)
             )
         }
-        const clients = cb =>{
+        const clients = () =>{
             this.clients(
                 (e,r)=>categories(cb)
             )
         }
-        const commandes = cb =>{
+        const commandes = () =>{
             this.commandes(
-                (e,r)=>cb(this)
+                (e,r)=>{
+                    if(callback) callback(this)
+                }
             )
         }
-        const categories = cb =>{
+        const categories = () =>{
             this.categories(
                 (e,r)=>articles(cb)
             )
         }
-        const articles = cb =>{
+        const articles = () =>{
             this.articles(
                 (e,r)=>commandes(cb)
             )
