@@ -1,6 +1,6 @@
 {
   "name": "@tek-tech/teeshop",
-  "version": "0.1.0-beta-cli02",
+  "version": "0.1.0-beta-cli03",
   "description": "",
   "main": "TeeShop.js",
   "scripts": {

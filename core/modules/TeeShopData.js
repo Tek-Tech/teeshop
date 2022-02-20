@@ -25,7 +25,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem,admin)
+                            elem=>this.processUserData(elem,true)
                         )
                         if(cb)cb(e,r)
                     }

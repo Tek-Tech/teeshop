@@ -26,6 +26,8 @@ class TeeShopCatArticle extends TeeShopArticle{
                     id,(e,article)=>{
                         this.article = article
                         this._data.article = article
+                        this.gotdata = true 
+                        this.trigger('gotdata')
                         if(cb)cb(this.article)
                     }
                 )
@@ -45,6 +47,7 @@ class TeeShopCatArticle extends TeeShopArticle{
 
     constructor(config,data){
         super(config,data)
+        this.gotdata = false
         this.setData()
     }
 

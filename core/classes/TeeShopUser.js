@@ -1,6 +1,7 @@
-const path = require('path')
-const TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
-
+if((typeof module)!='undefined'){
+    var path = require('path')
+    var TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
+}
 class TeeShopUser extends TeeShopObject{
 
 
@@ -22,5 +23,6 @@ class TeeShopUser extends TeeShopObject{
     }
 
 }
-
-module.exports = TeeShopUser
+if((typeof module)!='undefined'){
+    module.exports = TeeShopUser
+}

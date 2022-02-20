@@ -21,6 +21,20 @@ class TeeShopArticle extends TeeShopObject{
 
     }
 
+    whenGotData(cb){
+        if(this.gotdata){
+            cb()
+        }else{
+            this.when(
+                'gotdata',cb
+            )
+        }
+    }
+
+    gotData(){
+        return this.gotdata 
+    }
+
     addTo(target,targetid,cb){
         if(target == 'cat' || target == 'com'){
             if(target == 'cat') this.addToCat(targetid,cb)
@@ -49,6 +63,7 @@ class TeeShopArticle extends TeeShopObject{
 
     constructor(config,data){
         super(config,data)
+        this.gotdata = false
         this.waitForDeeBee()
         this.initDeeBee()
     }

@@ -1,6 +1,8 @@
-const path = require('path')
-const TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
-const TeeShopUser = require(path.join(__dirname,"TeeShopUser"))
+if((typeof module)!='undefined'){
+    var path = require('path')
+    var TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
+    var TeeShopUser = require(path.join(__dirname,"TeeShopUser"))
+}
 class TeeShopAdmin extends TeeShopUser{
 
 
@@ -15,5 +17,6 @@ class TeeShopAdmin extends TeeShopUser{
     }
 
 }
-
-module.exports = TeeShopAdmin
+if((typeof module)!='undefined'){
+    module.exports = TeeShopAdmin
+}

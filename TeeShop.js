@@ -126,6 +126,40 @@ class TeeShop extends Ear{
             )
     
     }
+    
+    _new_article_categorie(catid,nom,prix,cb){
+        // console.log(this.getData(
+
+        //     'categories'
+
+        // ))
+        this.getData(
+
+            'categories'
+
+        )   ?   
+                this.getCategorie(
+                    catid,(cat=>{
+                        if(!cat) cb(null)
+                        else(
+                            cat.addArticle(
+                                {nom,prix}
+                                ,(e,r)=>{
+                                    if(e)console.log(e)
+                                    cb(r)
+                                }
+                            )
+                        )
+                    })
+                )
+            
+            :   cb(
+
+                null
+            )
+    
+    }
+    
 
     _new_commande(userid,cb){
         // console.log(this.getData(
@@ -154,6 +188,21 @@ class TeeShop extends Ear{
 
 
     //DATA
+
+
+    getAdmin(id,cb){
+        this.admins(
+            (e,admins)=>{
+                let found = null
+                admins.forEach(
+                    admin=>{
+                        if(admin.id == id) found = admin._data
+                    }
+                )
+                cb(found)
+            }
+        )
+    }
 
     getData(data){
         return (this.data.hasOwnProperty(data)?this.data[data]:null)
@@ -314,7 +363,7 @@ class TeeShop extends Ear{
         this.database.__cliCreds(
             {user,pass},(e,r)=>{
                 console.log(e)
-                cb(r&&r.length?r[0]:null)
+                cb(r&&r.length?r[0]._data:null)
             }
         )
 
@@ -324,7 +373,7 @@ class TeeShop extends Ear{
 
         this.database.__admCreds(
             {user,pass},(e,r)=>{
-                cb(r&&r.length?r[0]:null)
+                cb(r&&r.length?r[0]._data:null)
             }
         )
 
