@@ -76,6 +76,7 @@ class TeeShopData extends TeeData{
             name:'_addProd'
             ,cb:function ({nom,prix},cb){
                 const req = this.__insertINTO(TeeData.knownTables.articles.name,['nom','prix'],[`'${nom}'`,`'${prix}'`])
+                console.log(req)
                 this._db().query(
                     req,cb
                 )
@@ -87,7 +88,9 @@ class TeeShopData extends TeeData{
                 if(!TeeData.knownTables.hasOwnProperty(target))cb('target not known',null)
                 else{
                     const req = this.__insertINTO(TeeData.knownTables[`articles_${target}`].name,[`${target.replace(target.charAt(target.length-1),'')}id`,'articleid'],[`${targetid}`,`${prodid}`])
+                    console.log(req)
                     this._db().query(
+
                         req,cb
                     )
                 }

@@ -22,12 +22,17 @@ class TeeCatManager extends TeeShopObject{
         let found = null
         this.getCategories(
             cats=>{
+                console.log(cats,'are cats')
                 cats.forEach(
                     cat=>{
-                        if (cat.getData(name?'nom':'id') == name?name:id) found = cat
+                        const searchee = cat.getData(name?'nom':'id')
+                        const search = name?name:id
+                        if (searchee == search) {
+                            cb(cat)
+                        }
                     }
                 )
-                cb(found)
+                if(!found && cb) cb(found)
             }
         )
     }

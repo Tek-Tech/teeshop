@@ -140,9 +140,9 @@ class TeeShop extends Ear{
 
         )   ?   
                 this.getCategorie(
-                    catid,(cat=>{
+                    catid,cat=>{
                         if(!cat) cb(null)
-                        else(
+                        else{
                             cat.addArticle(
                                 {nom,prix}
                                 ,(e,r)=>{
@@ -150,8 +150,9 @@ class TeeShop extends Ear{
                                     cb(r)
                                 }
                             )
-                        )
-                    })
+
+                        }
+                    },null
                 )
             
             :   cb(
@@ -311,11 +312,11 @@ class TeeShop extends Ear{
     }
     getArticleCategorie(catid,artid,cb,catname,name){
         this.getCategorie(
-            catid,catname,(category)=>{
+            catid,(category)=>{
                 category.getArticle(
                     artid,cb,name
                 )
-            }
+            },catname
         )
     }
     getArticleCommande(catid,artid,cb,catname,name){
