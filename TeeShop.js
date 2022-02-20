@@ -36,6 +36,7 @@ class TeeShop extends Ear{
         if(this.coreready&&this.dbready) this.ready = 1
     }
     init(dbcreds,cb){
+        TeeShop.defaultcreds = dbcreds?dbcreds:TeeShop._d_creds()
         this.dc = dbcreds
         this.whenReady(
             ()=>{
@@ -277,6 +278,14 @@ class TeeShop extends Ear{
                 commande?commande.setData(
                     cb
                 ):cb(commande)
+            }
+        )
+    }
+    getProd(id,cb){
+        this.database._getProd(
+            id,(e,r)=>{
+                if(r&&r.length) r = r[0]._data
+                cb(r)
             }
         )
     }

@@ -125,7 +125,7 @@ class TeeShopData extends TeeData{
         },
         {
             name:'_getCatProds',cb:function (catid,cb){
-                const req = this.__selectFrom(TeeData._n_t().articles_categories.name,['*'],[['categorieid'],[`${catid}`]])
+                const req = this.__selectFrom(`${TeeData._n_t().articles_categories.name} INNER JOIN ${TeeData._n_t().articles.name} ON ${TeeData._n_t().articles.name}.id`,['*'],[['categorieid',`${TeeData._n_t().articles_categories.name}.articleid`],[`${catid}`,`${TeeData._n_t().articles.name}.id`]])
                 
                 this._db().query(
                     req,(e,r)=>{
@@ -256,6 +256,20 @@ class TeeShopData extends TeeData{
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
                             elem=>this.processRawData(elem,'Cart')
+                        )
+                        if(cb)cb(e,r)
+                    }
+                )
+            }
+        },
+        {
+            name:'_getComProds',cb:function (catid,cb){
+                const req = this.__selectFrom(`${TeeData._n_t().articles_commandes.name} INNER JOIN ${TeeData._n_t().articles.name} ON ${TeeData._n_t().articles.name}.id`,['*'],[['commandeid',`${TeeData._n_t().articles_commandes.name}.articleid`],[`${catid}`,`${TeeData._n_t().articles.name}.id`]])
+                
+                this._db().query(
+                    req,(e,r)=>{
+                        if(r && r.length) r = r.map(
+                            elem=>this.processRawData(elem,'ComArticle')
                         )
                         if(cb)cb(e,r)
                     }
