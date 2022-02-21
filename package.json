@@ -1,6 +1,6 @@
 {
   "name": "@tek-tech/teeshop",
-  "version": "0.1.0-beta-1.0",
+  "version": "0.1.0-beta-2.0",
   "description": "",
   "main": "TeeShop.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Tek-Tech/teeshop#readme",
   "dependencies": {
-    "@tek-tech/deebee": "^1.0.3-tee-r1",
+    "@tek-tech/deebee": "^1.0.4-beta",
     "@tek-tech/ears": "^0.0.1-beta",
     "fs": "^0.0.1-security",
     "path": "^0.12.7"
