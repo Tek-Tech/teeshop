@@ -5,7 +5,7 @@ module.exports = {
             ["id","INT",["NOT NULL","AUTO_INCREMENT"]]
             ,["nom","TEXT",["NOT NULL"]]
             ,["prenom","TEXT",["NOT NULL"]]
-            ,["username","TEXT",["NOT NULL"]]
+            ,["username","TEXT"]
             ,["adresse","TEXT",["NOT NULL"]]
             ,["telephone","TEXT",["NOT NULL"]]
             ,["mail","TEXT",["NOT NULL"]]

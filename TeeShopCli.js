@@ -116,13 +116,80 @@ class TeeShopCli extends Ear{
                                 this.setReady()
                             }
                         }else{
-                            this.setReady()
+                            this.setCart()
+                            this.whenGotCart(
+                                cart=>{
+                                    this.setReady()
+                                }
+                            )
+         
                         }
                     }
                 )
 
             }
         )
+    }
+    addCartProd(id,nom,quantite,prix){
+        this.cart.articles.push({
+            id,nom,quantite,prix
+        })
+        this.saveCart()
+    }
+    whenGotCart(cb){
+
+        if(this.gotCart()){
+            cb(this.getCart())
+        }else{
+            this.when(
+                'gotcart',cb
+            )
+        }
+
+    }
+
+
+    gotCart(){
+        return this.getCart() == true
+    }
+
+
+    setCart(cart=null){
+
+        if(cart){
+            this.cart = cart
+            return
+        }
+        if((typeof Cman)!='undefined'){
+            if(Cman.cooks().hasOwnProperty('cart')){
+                this.cart = JSON.parse(Cman.cooks()['cart'])
+                this.trigger('gotcart',this.cart)
+    
+            }else{
+                this.saveCart()
+                this.trigger('gotcart',this.cart)
+            }
+
+        }else{
+            console.log((typeof Cman)!='undefined')
+        }
+    }
+
+
+    saveCart(){
+
+        if((typeof Cman)!='undefined' ){
+        
+            Cman.setCookie('cart',JSON.stringify(this.cart ? this.cart : {articles:[],client:{nom:null,prenom:null,telephone:null,adresse:null,mail:null}}))
+            this.setCart(this.cart ? this.cart : {articles:[],client:{nom:null,prenom:null,telephone:null,adresse:null,mail:null}})
+        
+        }
+    }
+
+    getCart(){
+
+        return this.cart
+
     }
 
     isAdmin(){
@@ -136,6 +203,8 @@ class TeeShopCli extends Ear{
         console.log('http://tektech.rf.gd')
         this.isadmin = isAdmin
         this.sio = new PageSocket()
+        this.cart = null
+ 
         this.init()
         this.whenReady(
             ()=>{
