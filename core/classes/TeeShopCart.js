@@ -89,11 +89,11 @@ class TeeShopCommande extends TeeShopObject{
         )
     }
 
-    addArticle(id,cb){
+    addArticle(id,quantite,cb){
         this.whenGotDeeBee(
             ()=>{
-                this.database._linkProd(
-                    'commandes',this.getData('id'),id,()=>{
+                this.database._linkComProd(
+                    'commandes',this.getData('id'),id,quantite,()=>{
                         this.setData(
                             ()=>{
                                 cb(e,r)

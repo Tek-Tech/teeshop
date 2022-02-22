@@ -13,7 +13,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem)
+                            elem=>{return this.processUserData(elem)}
                         )
                         if(cb)cb(e,r)
                     }
@@ -25,7 +25,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem,true)
+                            elem=>{return this.processUserData(elem,true)}
                         )
                         if(cb)cb(e,r)
                     }
@@ -37,7 +37,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Article')
+                            elem=>{return this.processRawData(elem,'Article')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -51,7 +51,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Article')
+                            elem=>{return this.processRawData(elem,'Article')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -65,7 +65,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Article')
+                            elem=>{return this.processRawData(elem,'Article')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -76,7 +76,6 @@ class TeeShopData extends TeeData{
             name:'_addProd'
             ,cb:function ({nom,prix,illu},cb){
                 const req = this.__insertINTO(TeeData.knownTables.articles.name,['nom','prix','illu'],[`'${nom}'`,`'${prix}'`,`'${illu}'`])
-                console.log(req)
                 this._db().query(
                     req,cb
                 )
@@ -88,7 +87,21 @@ class TeeShopData extends TeeData{
                 if(!TeeData.knownTables.hasOwnProperty(target))cb('target not known',null)
                 else{
                     const req = this.__insertINTO(TeeData.knownTables[`articles_${target}`].name,[`${target.replace(target.charAt(target.length-1),'')}id`,'articleid'],[`${targetid}`,`${prodid}`])
-                    console.log(req)
+                    
+                    this._db().query(
+
+                        req,cb
+                    )
+                }
+            }
+        },
+        {
+            name:'_linkComProd'
+            ,cb:function (target,targetid,prodid,quantite,cb){
+                if(!TeeData.knownTables.hasOwnProperty(target))cb('target not known',null)
+                else{
+                    const req = this.__insertINTO(TeeData.knownTables[`articles_${target}`].name,[`${target.replace(target.charAt(target.length-1),'')}id`,'articleid','quantite'],[`${targetid}`,`${prodid}`,`${quantite}`])
+                    
                     this._db().query(
 
                         req,cb
@@ -113,13 +126,13 @@ class TeeShopData extends TeeData{
         },
         {
             name:'_addComProd'
-            ,cb:function (catid,{nom,prix},cb){
+            ,cb:function (comid,{nom,prix},cb){
                 this._addProd(
                     {nom,prix},(e,r)=>{
                         if(e)cb(e,r)
                         else{
                             this._linkProd(
-                                'commandes',catid,r.insertId,cb
+                                'commandes',comid,r.insertId,cb
                             )
                         }
                     }
@@ -133,7 +146,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'CatArticle')
+                            elem=>{return this.processRawData(elem,'CatArticle')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -146,7 +159,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Categorie')
+                            elem=>{return this.processRawData(elem,'Categorie')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -160,7 +173,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Categorie')
+                            elem=>{return this.processRawData(elem,'Categorie')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -174,7 +187,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Categorie')
+                            elem=>{return this.processRawData(elem,'Categorie')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -197,7 +210,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem)
+                            elem=>{return this.processUserData(elem)}
                         )
                         if(cb)cb(e,r)
                     }
@@ -207,10 +220,11 @@ class TeeShopData extends TeeData{
         {
             name:'_getCli',cb:function (id,cb){
                 const req = this.__selectFrom(TeeData._n_t().clients.name,['*'],[['id'],[id]])
+                
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem)
+                            elem=>{return this.processUserData(elem)}
                         )
                         if(cb)cb(e,r)
                     }
@@ -232,7 +246,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem)
+                            elem=>{return this.processUserData(elem)}
                         )
                         if(cb)cb(e,r)
                     }
@@ -245,7 +259,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Cart')
+                            elem=>{return this.processRawData(elem,'Cart')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -258,8 +272,8 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Cart')
-                        )
+                            elem=>{return this.processRawData(elem,'Cart')}
+                        )[0]
                         if(cb)cb(e,r)
                     }
                 )
@@ -272,7 +286,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'ComArticle')
+                            elem=>{return this.processRawData(elem,'ComArticle')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -285,7 +299,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processRawData(elem,'Cart')
+                            elem=>{return this.processRawData(elem,'Cart')}
                         )
                         if(cb)cb(e,r)
                     }
@@ -298,7 +312,14 @@ class TeeShopData extends TeeData{
                 const req = this.__insertINTO(TeeData.knownTables.commandes.name,['userid'],[`${userid}`])
                 
                 this._db().query(
-                    req,cb
+                    req,(e,r)=>{
+                        if(e){
+                            console.log(e)
+                            cb(r)
+                        }else{
+                            this._getCom(r.insertId,cb)
+                        }
+                    }
                 )
             }
         },
@@ -308,7 +329,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem,true)
+                            elem=>{return this.processUserData(elem,true)}
                         )
                         if(cb)cb(e,r)
                     }
@@ -321,7 +342,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem,true)
+                            elem=>{return this.processUserData(elem,true)}
                         )
                         if(cb)cb(e,r)
                     }
@@ -343,7 +364,7 @@ class TeeShopData extends TeeData{
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
-                            elem=>this.processUserData(elem,true)
+                            elem=>{return this.processUserData(elem,true)}
                         )
                         if(cb)cb(e,r)
                     }
@@ -369,6 +390,7 @@ class TeeShopData extends TeeData{
     
     processRawData(data,type){
         type = this.shop.core.getObject(`TeeShop${type}`)
+        console.log('type is...',type)
         return type ? new type.class({db:this},data) : data
 
     }
