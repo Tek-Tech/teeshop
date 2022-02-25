@@ -11,8 +11,7 @@ class TeeComManager extends TeeShopObject{
             ()=>{
                 this.database._addCom(
                     {userid},(e,r)=>{
-                        console.log(e)
-                        console.log('inserted',r)
+                        if(e)console.log(e)
                         this.config.shop.setData(cb)
                     }
                 )
@@ -62,7 +61,6 @@ class TeeComManager extends TeeShopObject{
                     ()=>{
                         this.setReady()
                         if(cb)cb(this)
-                        console.log('ready')
                     }
                 )
             }

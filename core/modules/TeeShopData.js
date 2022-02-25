@@ -220,7 +220,6 @@ class TeeShopData extends TeeData{
         {
             name:'_getCli',cb:function (id,cb){
                 const req = this.__selectFrom(TeeData._n_t().clients.name,['*'],[['id'],[id]])
-                
                 this._db().query(
                     req,(e,r)=>{
                         if(r && r.length) r = r.map(
@@ -383,19 +382,19 @@ class TeeShopData extends TeeData{
             }
         )
         userdata=returned
-        const usertype = this.shop.core.getObject(`TeeShop${admin?'Admin':'User'}`)
+        const usertype = this.shop.core.getObject(`TeeShop${admin?'Admin':'Client'}`)
         return usertype ? new usertype.class({db:this},userdata) : userdata
 
     }
     
     processRawData(data,type){
         type = this.shop.core.getObject(`TeeShop${type}`)
-        console.log('type is...',type)
         return type ? new type.class({db:this},data) : data
 
     }
-
-
+    _n_t(){
+        return TeeData._n_t()
+    }
     initialize(cb){
         this.configureActions(...TeeShopData.actions)
         if(cb)cb()

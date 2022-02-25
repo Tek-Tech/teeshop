@@ -1,6 +1,5 @@
 if((typeof module)!='undefined'){
     var path = require('path')
-    var TeeShopObject = require(path.join(__dirname,"TeeShopObject"))
     var TeeShopUser = require(path.join(__dirname,"TeeShopUser"))
 }
 class TeeShopAdmin extends TeeShopUser{

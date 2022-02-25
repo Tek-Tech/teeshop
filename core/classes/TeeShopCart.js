@@ -56,6 +56,18 @@ class TeeShopCommande extends TeeShopObject{
         return this.getData('user')
     }
 
+    setUser(cb){
+        this.user(
+            (user)=>{
+                this.gotuser = true
+                this.trigger(
+                    'gotuser',user
+                )
+                if(cb)cb(this)
+            
+            }
+        )
+    }
     setData(cb){
         this.articles(
             articles=>{
@@ -63,13 +75,10 @@ class TeeShopCommande extends TeeShopObject{
                 this.trigger(
                     'gotarticles',articles
                 )
-                this.user(
-                    (user)=>{
-                        this.gotuser = true
+                if(cb)cb(this)
+                this.setUser(
+                    ()=>{
                         if(cb)cb(this)
-                        this.trigger(
-                            'gotuser',user
-                        )
                     }
                 )
             }

@@ -65,7 +65,6 @@ class TeeCatManager extends TeeShopObject{
                     ()=>{
                         this.setReady()
                         if(cb)cb(this)
-                        console.log('ready')
                     }
                 )
             }

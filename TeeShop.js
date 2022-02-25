@@ -63,8 +63,6 @@ class TeeShop extends Ear{
                         r.insertId,cb
                     )
                 }else{
-                    console.log(e)
-                    console.log(r)
                     this.data.clients = clis
                     cb(e,clis)
                 }
@@ -88,8 +86,6 @@ class TeeShop extends Ear{
                         r.insertId,cb
                     )
                 }else{
-                    console.log(e)
-                    console.log(r)
                     this.data.admins = adms
                     cb(e,adms)
                 }
@@ -375,8 +371,12 @@ class TeeShop extends Ear{
 
         this.database.__cliCreds(
             {user,pass},(e,r)=>{
-                console.log(e)
-                cb(r&&r.length?r[0]._data:null)
+                if(e)console.log(e)
+                if(r&&r.length){
+                    r[0].getData(
+                        cb
+                    )
+                }
             }
         )
 

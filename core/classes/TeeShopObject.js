@@ -57,11 +57,13 @@ class TeeShopObject extends Ear{
     }
 
     configure(config){
-        Object.keys(config).forEach(
-            confname=>{
-                this.config[confname] = config[confname]
-            }
-        )
+        if(this.config){
+            Object.keys(config).forEach(
+                confname=>{
+                    this.config[confname] = config[confname]
+                }
+            )
+        }
     }
 
 
