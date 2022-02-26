@@ -3,7 +3,7 @@ const path = require('path')
 const objectspath = path.join(__dirname,'..','objects')
 const classespath = path.join(__dirname,"..","classes")
 const TeeShopObject = require(path.join(classespath,"TeeShopObject"))
-const TeeData = require(path.join(objectspath,'TeeData'))
+const TeeData = require('@tek-tech/teedata')
 
 
 class TeeShopData extends TeeData{
