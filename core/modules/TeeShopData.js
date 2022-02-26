@@ -1,6 +1,8 @@
 
 const path = require('path')
 const objectspath = path.join(__dirname,'..','objects')
+const classespath = path.join(__dirname,"..","classes")
+const TeeShopObject = require(path.join(classespath,"TeeShopObject"))
 const TeeData = require(path.join(objectspath,'TeeData'))
 
 
@@ -404,6 +406,7 @@ class TeeShopData extends TeeData{
     constructor(shop,creds={},tables=[]){
     
         super(creds,tables.length?tables:TeeData._tables()?TeeData._tables():[])
+        Object.assign(this, new TeeShopObject({},{}))
 
         this.shop = shop
         this._setUsersTable(TeeData._n_t().clients.name)

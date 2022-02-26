@@ -1,9 +1,7 @@
 
 const DeeBee = require('@tek-tech/deebee')
 const path = require('path')
-const classespath = path.join(__dirname,"..","classes")
-const learningpath = path.join(__dirname,"..","learn")
-const TeeShopObject = require(path.join(classespath,"TeeShopObject"))
+const learningpath = path.join(__dirname,"learn")
 const tableData = require(path.join(learningpath,'tbs'))
 
 class TeeData extends DeeBee{
@@ -40,7 +38,6 @@ class TeeData extends DeeBee{
 
     constructor(creds={},tables=[]){
         super(creds,tables.length?tables:TeeData._tables()?TeeData._tables():[])
-        Object.assign(this, new TeeShopObject({},{}))
     }
 
 }
