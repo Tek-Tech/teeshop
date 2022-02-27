@@ -26,7 +26,7 @@ class TeeShopCommande extends TeeShopObject{
     articles(cb){
         this.whenGotDeeBee(
             ()=>{
-                this.database._getCatProds(
+                this.database._getComProds(
                     this.getData('id'),(e,r)=>{
                         if(e)console.log(e)
                         this._data.articles = r
