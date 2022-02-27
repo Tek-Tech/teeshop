@@ -19,6 +19,12 @@ class TeeShopCli extends Ear{
             }
         )
 
+        this.askCommands(
+            (commands)=>{
+                alert('got commands')
+                console.log(commands)
+            }
+        )
     
     }
     
@@ -58,8 +64,8 @@ class TeeShopCli extends Ear{
         return this.askCategories(cb)
     }
 
-    getCommandes(){
-        return this.data.commandes
+    getCommandes(cb){
+        return this.askCommands(cb)
     }
 
     askArticles(cb){
@@ -69,6 +75,19 @@ class TeeShopCli extends Ear{
                     'articles',{},(arts)=>{
                         this.data.articles = arts
                         if(cb)cb(arts)
+                    }
+                )
+            }
+        )
+    }
+
+    askCommands(cb){
+        this.sio.whenUuidentified(
+            ()=>{
+                this.sio.post(
+                    'commandes',{},(coms)=>{
+                        this.data.commandes = coms
+                        if(cb)cb(coms)
                     }
                 )
             }
