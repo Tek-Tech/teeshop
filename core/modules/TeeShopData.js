@@ -237,7 +237,12 @@ class TeeShopData extends TeeData{
                 const req = this.__selectFrom(TeeData._n_t().clients.name,['*'],[['id'],[id]])
                 this._db().query(
                     req,(e,r)=>{
-                        if(r && r.length) r = r[0]
+                        if(r && r.length){
+                            r = r[0]
+                            r.password = undefined
+                        }else{
+                            r = null
+                        }
                         if(cb)cb(e,r)
                     }
                 )
