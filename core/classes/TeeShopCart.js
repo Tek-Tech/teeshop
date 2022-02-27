@@ -75,7 +75,7 @@ class TeeShopCommande extends TeeShopObject{
                 this.trigger(
                     'gotarticles',articles
                 )
-                if(cb)cb(this)
+                // if(cb)cb(this)
                 this.setUser(
                     ()=>{
                         if(cb)cb(this)
