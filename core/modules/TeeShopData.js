@@ -233,6 +233,17 @@ class TeeShopData extends TeeData{
             }
         },
         {
+            name:'_getRawCli',cb:function (id,cb){
+                const req = this.__selectFrom(TeeData._n_t().clients.name,['*'],[['id'],[id]])
+                this._db().query(
+                    req,(e,r)=>{
+                        if(r && r.length) r = r[0]
+                        if(cb)cb(e,r)
+                    }
+                )
+            }
+        },
+        {
             name:'_addCli'
             ,cb:function ({nom,prenom,username,adresse,telephone,mail,password},cb){
                 const req = this.__insertINTO(TeeData.knownTables.clients.name,['nom','prenom','username','adresse','telephone','mail','password'],[`'${nom}'`,`'${prenom}'`,`'${username}'`,`'${adresse}'`,`'${telephone}'`,`'${mail}'`,`MD5('${password}')`])

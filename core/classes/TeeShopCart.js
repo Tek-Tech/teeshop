@@ -39,7 +39,7 @@ class TeeShopCommande extends TeeShopObject{
 
     user(cb){
         const id = this.getData('userid')
-        this.database._getCli(
+        this.database._getRawCli(
             id,(e,user)=>{
                 if(e)console.log(e)
                 this._data.user = user
