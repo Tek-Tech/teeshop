@@ -13,18 +13,18 @@ class TeeShopCli extends Ear{
         this.askCategories(
             (cats)=>{
                 this.data.categories = cats
-                this.setReady()
-                if(currentpage == 'admin') this.hasOwnProperty('refreshTabView') ? this.refreshTabView() : null
-                if(cb)cb()
+
+                this.askCommands(
+                    (commands)=>{
+                        this.data.commandes = commands
+                        this.setReady()
+                        if(currentpage == 'admin') this.hasOwnProperty('refreshTabView') ? this.refreshTabView() : null
+                        if(cb)cb()
+                    }
+                )
             }
         )
 
-        this.askCommands(
-            (commands)=>{
-                alert('got commands')
-                console.log(commands)
-            }
-        )
     
     }
     
@@ -48,6 +48,80 @@ class TeeShopCli extends Ear{
                         ${cat.articles.map(
                             article=>{
                                 return this.renderCategorieArticle(article)
+                            }
+                        ).join('\n')}
+                    </ul>
+                </li>
+            </ul>
+        `
+    }
+
+    renderCommandeUser(user){
+        return `
+            <ul class='user'>
+                Références client
+                <li>
+                    <span>
+                        Nom Complet :
+                    </span>
+                    <span>
+                        ${user.prenom} ${user.nom}
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        Téléphone :
+                    </span>
+                    <span>
+                        ${user.telephone}
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        Adresse E-mail :
+                    </span>
+                    <span>
+                        ${user.mail}
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        Adresse Postale:
+                    </span>
+                    <span>
+                        ${user.adresse}
+                    </span>
+                </li>
+            </ul>
+        `
+    }
+
+    renderCommandeArticle(article){
+        return `
+            <li id='${article.id}' class='article'>
+                <img src='/illuprods/${article.illu}'>
+                <span>${article.nom}</span>
+            </li>
+        `
+    }
+
+
+    renderCommande(com){
+        return `
+            <ul class='commande'>
+                <h1>
+                    COMMANDE : TS_${com.id}
+                </h1>
+                <li>
+                    ${
+                        this.renderCommandeUser(com.user)
+                    }
+                </li>
+                <li>
+                    <ul  class='articles'>
+                        ${com.articles.map(
+                            article=>{
+                                return this.renderCommandeArticle(article)
                             }
                         ).join('\n')}
                     </ul>
