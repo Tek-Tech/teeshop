@@ -14,6 +14,10 @@ class TeeShopCli extends Ear{
             (cats)=>{
                 this.data.categories = cats
 
+                if(!this.isAdmin()){
+                    action()
+                    return
+                }
                 this.askCommands(
                     (commands)=>{
                         this.data.commandes = commands
@@ -147,7 +151,7 @@ class TeeShopCli extends Ear{
         return `
             <ul class='message'>
                 <h1>
-                    MESSAGE : TSM_${com.id}
+                    MESSAGE : TSM_${message.id}
                 </h1>
                 <li>
                     ${
