@@ -8,8 +8,11 @@ class TeeShopCli extends Ear{
     }
 
     getData(cb){
-
-
+        const action = ()=>{
+            this.setReady()
+            if(currentpage == 'admin') this.hasOwnProperty('refreshTabView') ? this.refreshTabView() : null
+            if(cb)cb()
+        }
         this.askCategories(
             (cats)=>{
                 this.data.categories = cats
@@ -21,11 +24,6 @@ class TeeShopCli extends Ear{
                 this.askCommands(
                     (commands)=>{
                         this.data.commandes = commands
-                        const action = ()=>{
-                            this.setReady()
-                            if(currentpage == 'admin') this.hasOwnProperty('refreshTabView') ? this.refreshTabView() : null
-                            if(cb)cb()
-                        }
                         if(!this.gotcform){
                             action()
                             return
