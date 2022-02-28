@@ -27,6 +27,20 @@ class TeeShopCli extends Ear{
 
     
     }
+
+    renderPanel(){
+        return `
+            <h1>Panel</h1>
+            <section class='panel-block'>
+                ${
+                    this.renderCommandes()
+                }
+                ${
+                    this.renderCategories()
+                }
+            </section>
+        `
+    }
     
     renderCategorieArticle(article){
         return `
@@ -37,7 +51,7 @@ class TeeShopCli extends Ear{
         `
     }
 
-    renderCategorieArticles(cat){
+    renderCategorie(cat){
         return `
             <ul class='categorie'>
                 <h1>
@@ -52,6 +66,23 @@ class TeeShopCli extends Ear{
                         ).join('\n')}
                     </ul>
                 </li>
+            </ul>
+        `
+    }
+
+    renderCategories(){
+        return `
+            <h1>Catégories</h1>
+            <ul class='list' class='liste-categories'>
+                ${
+                    TeeShop.data.categories.map(
+                        categorie=>{
+                            return TeeShop.renderCategorie(
+                                categorie
+                            )
+                        }
+                    ).join('\n')
+                }
             </ul>
         `
     }
@@ -105,6 +136,23 @@ class TeeShopCli extends Ear{
         `
     }
 
+
+    renderCommandes(){
+        return `
+            <h1>Commandes</h1>
+            <ul class='list' class='liste-commandes'>
+                ${
+                    this.data.commandes.map(
+                        commande=>{
+                            return TeeShop.renderCommande(
+                                commande
+                            )
+                        }
+                    ).join('\n')
+                }
+            </ul>
+        `
+    }
 
     renderCommande(com){
         return `
