@@ -17,9 +17,21 @@ class TeeShopCli extends Ear{
                 this.askCommands(
                     (commands)=>{
                         this.data.commandes = commands
-                        this.setReady()
-                        if(currentpage == 'admin') this.hasOwnProperty('refreshTabView') ? this.refreshTabView() : null
-                        if(cb)cb()
+                        function action(){
+                            this.setReady()
+                            if(currentpage == 'admin') this.hasOwnProperty('refreshTabView') ? this.refreshTabView() : null
+                            if(cb)cb()
+                        }
+                        if(!this.gotcform){
+                            action()
+                            return
+                        }
+                        this.askContactMsgs(
+                            msgs=>{
+                                this.data.messages = msgs
+                                action()
+                            }
+                        )
                     }
                 )
             }
@@ -186,6 +198,10 @@ class TeeShopCli extends Ear{
         return this.askCategories(cb)
     }
 
+    getMsgs(cb){
+        return this.askContactMsgs(cb)
+    }
+
     getCommandes(cb){
         return this.askCommands(cb)
     }
@@ -197,6 +213,19 @@ class TeeShopCli extends Ear{
                     'articles',{},(arts)=>{
                         this.data.articles = arts
                         if(cb)cb(arts)
+                    }
+                )
+            }
+        )
+    }
+
+    askContactMsgs(cb){
+        this.sio.whenUuidentified(
+            ()=>{
+                this.sio.post(
+                    'cliMsgs',{},(msgs)=>{
+                        this.data.messages = msgs
+                        if(cb)cb(msgs)
                     }
                 )
             }
@@ -337,12 +366,13 @@ class TeeShopCli extends Ear{
         return this.isadmin
     }
 
-    constructor(isAdmin = false){
+    constructor(isAdmin = false,gotContactForms){
         super()
         console.log("RUNNING TSHOP...")
         console.log("Auteur: EL HADJI SEYBATOU MBENGUE (TEK-TECH)")
         console.log('http://tektech.rf.gd')
         this.isadmin = isAdmin
+        this.gotcform = gotContactForms
         this.sio = new PageSocket()
         this.cart = null
  
