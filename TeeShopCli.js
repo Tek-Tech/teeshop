@@ -17,7 +17,7 @@ class TeeShopCli extends Ear{
                 this.askCommands(
                     (commands)=>{
                         this.data.commandes = commands
-                        function action(){
+                        const action = ()=>{
                             this.setReady()
                             if(currentpage == 'admin') this.hasOwnProperty('refreshTabView') ? this.refreshTabView() : null
                             if(cb)cb()
