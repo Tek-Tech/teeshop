@@ -85,12 +85,91 @@ class TeeShopCli extends Ear{
     renderCategories(){
         return `
             <h1>Catégories</h1>
-            <ul class='list' class='liste-categories'>
+            <ul class='list' id='liste-categories'>
                 ${
                     TeeShop.data.categories.map(
                         categorie=>{
                             return TeeShop.renderCategorie(
                                 categorie
+                            )
+                        }
+                    ).join('\n')
+                }
+            </ul>
+        `
+    }
+
+
+
+    renderMessageUser(user){
+        return `
+            <ul class='user'>
+                Références client
+                <li>
+                    <span>
+                        Nom Complet :
+                    </span>
+                    <span>
+                        ${user.prenom} ${user.nom}
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        Téléphone :
+                    </span>
+                    <span>
+                        ${user.telephone}
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        Adresse E-mail :
+                    </span>
+                    <span>
+                        ${user.mail}
+                    </span>
+                </li>
+            </ul>
+        `
+    }
+
+
+    renderMessageMessage(message){
+        return `
+            <li id='${message.id}' class='message'>
+                <span>${message.message}</span>
+            </li>
+        `
+    }
+
+    renderMessage(message){
+        
+        return `
+            <ul class='message'>
+                <h1>
+                    MESSAGE : TSM_${com.id}
+                </h1>
+                <li>
+                    ${
+                        this.renderMessageUser(message)
+                    }
+                </li>
+                ${
+                    this.renderMessageMessage(message)
+                }
+            </ul>
+        `
+    }
+
+    renderContactMessages(){
+        return `
+            <h1>Messages</h1>
+            <ul class='list' id='liste-messages'>
+                ${
+                    TeeShop.data.messages.map(
+                        message=>{
+                            return TeeShop.renderMessage(
+                                message
                             )
                         }
                     ).join('\n')
@@ -152,7 +231,7 @@ class TeeShopCli extends Ear{
     renderCommandes(){
         return `
             <h1>Commandes</h1>
-            <ul class='list' class='liste-commandes'>
+            <ul class='list' id='liste-commandes'>
                 ${
                     this.data.commandes.map(
                         commande=>{
@@ -170,7 +249,7 @@ class TeeShopCli extends Ear{
         return `
             <ul class='commande'>
                 <h1>
-                    COMMANDE : TS_${com.id}
+                    COMMANDE : TSC_${com.id}
                 </h1>
                 <li>
                     ${
