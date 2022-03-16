@@ -394,7 +394,8 @@ class TeeShopCli extends Ear{
                     if(article.id == id) article.quantite++
                     return article
                 }
-            )
+            )    
+            this.saveCart()
         }
     }
     decrementCartUnit(id){
@@ -404,19 +405,32 @@ class TeeShopCli extends Ear{
                     if(article.id == id) article.quantite--
                     return article
                 }
-            )
+            )    
+            this.saveCart()
         }
     }
     delCartProd(id){
         if(this.cart.articles.length){
-            let ærticles = []
+            let articles = []
             this.cart.articles.forEach(
                 article=>{
                     if(article.id != id) articles.push(article)
                 }
             )
             this.cart.articles = articles
+            this.saveCart()
         }
+    }
+    hasInCart(id){
+        let found = null
+        if(this.cart.articles.length){
+            this.cart.articles.forEach(
+                article=>{
+                    if(article.id == id) found = article
+                }
+            )
+        }
+        return found
     }
     whenGotCart(cb){
 
