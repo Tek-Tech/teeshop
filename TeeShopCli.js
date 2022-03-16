@@ -388,10 +388,24 @@ class TeeShopCli extends Ear{
         this.saveCart()
     }
     incrementCartUnit(id){
-        
+        if(this.cart.articles.length){
+            this.cart.articles = this.cart.articles.map(
+                article=>{
+                    if(article.id == id) article.quantite++
+                    return article
+                }
+            )
+        }
     }
     decrementCartUnit(id){
-
+        if(this.cart.articles.length){
+            this.cart.articles = this.cart.articles.map(
+                article=>{
+                    if(article.id == id) article.quantite--
+                    return article
+                }
+            )
+        }
     }
     delCartProd(id){
 
