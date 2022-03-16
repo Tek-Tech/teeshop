@@ -404,15 +404,24 @@ class TeeShopCli extends Ear{
     }
     decrementCartUnit(id){
         if(this.cart.articles.length){
-            this.cart.articles = this.cart.articles.map(
+            let articles = []
+            this.cart.articles.forEach(
                 article=>{
                     if(article.id == id) {
                         article.quantite--
-                        if(article.quantite == 0) this.delCartProd(id)
+                        if(article.quantite < 0){
+                            article.quantite = 0
+                            this.delCartProd(article.id)
+                        }
                     }
-                    return article
+                    if(article.quantite == 0){
+                        this.delCartProd(article.id)
+                        return
+                    }
+                    articles.push(article)
                 }
             )    
+            this.cart.articles = articles
             this.saveCart()
         }
     }
