@@ -382,9 +382,13 @@ class TeeShopCli extends Ear{
         )
     }
     addCartProd(id,nom,quantite,prix){
-        this.cart.articles.push({
-            id,nom,quantite,prix
-        })
+        if(!this.hasInCart(id)){
+            this.cart.articles.push({
+                id,nom,quantite,prix
+            })
+        }else{
+            this.incrementCartUnit(id)
+        }
         this.saveCart()
     }
     incrementCartUnit(id){
@@ -402,7 +406,10 @@ class TeeShopCli extends Ear{
         if(this.cart.articles.length){
             this.cart.articles = this.cart.articles.map(
                 article=>{
-                    if(article.id == id) article.quantite--
+                    if(article.id == id) {
+                        article.quantite--
+                        if(article.quantite == 0) this.delCartProd(id)
+                    }
                     return article
                 }
             )    
