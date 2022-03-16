@@ -387,6 +387,15 @@ class TeeShopCli extends Ear{
         })
         this.saveCart()
     }
+    incrementCartUnit(id){
+        
+    }
+    decrementCartUnit(id){
+
+    }
+    delCartProd(id){
+
+    }
     whenGotCart(cb){
 
         if(this.gotCart()){
