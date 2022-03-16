@@ -408,7 +408,15 @@ class TeeShopCli extends Ear{
         }
     }
     delCartProd(id){
-
+        if(this.cart.articles.length){
+            let ærticles = []
+            this.cart.articles.forEach(
+                article=>{
+                    if(article.id != id) articles.push(article)
+                }
+            )
+            this.cart.articles = articles
+        }
     }
     whenGotCart(cb){
 
