@@ -477,7 +477,7 @@ class TeeShop extends Ear{
         let conf = {}
         Object.keys(TeeShop._d_conf()).forEach(
             key=>{
-                conf[key] = config.hasOwnProperty(key) ? confi[key] : TeeShop._d_conf()[key]
+                conf[key] = config.hasOwnProperty(key) ? config[key] : TeeShop._d_conf()[key]
             }
         )
         return conf
