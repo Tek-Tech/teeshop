@@ -473,10 +473,20 @@ class TeeShop extends Ear{
     getConfig(configname){
         return (this.config.hasOwnProperty(configname)) ? this.config[configname] : null
     }
-    constructor(config,dbcreds,cb){
+    parseConfig(config){
+        let conf = {}
+        Object.keys(TeeShop._d_conf()).forEach(
+            key=>{
+                conf[key] = config.hasOwnProperty(key) ? confi[key] : TeeShop.._d_conf()[key]
+            }
+        )
+        return conf
+    }
+    constructor(config=TeeShop._d_conf(),dbcreds=TeeShop._d_creds(),cb=()=>{}){
         super()
         this.config = {}
         this.classes = {}
+        config = this.parseConfig(config)
         this.setConfig(config)
         this.init(dbcreds,cb)
     }
